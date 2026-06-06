@@ -1,15 +1,16 @@
 # Nome do Jogo
 
+> Life of Cards
+
 Projeto final da disciplina de Introdução a Algoritmos/Programação, desenvolvido com Python e Pygame.
 
-Este repositório é um template para os grupos da disciplina. A proposta é começar com uma base funcional e evoluir o jogo ao longo do semestre.
 
 ## Integrantes do grupo
 
-- Matheus Oliveira Costa Torres
-- Lorrainny Camille Aparecida Gonçalves
-- Nome do integrante 3
-- Nome do integrante 4
+- Nome 1: Lorrainny Camille Aparecida 
+- Nome 2: Matheus Oliveira Costa Torres
+- Nome 3: Rafael Henrique da Pena Duarte
+- Nome 4: Enzo Espíndola Sousa Broilo Rezende *
 
 ## Estrutura do projeto
 
@@ -22,43 +23,28 @@ Este repositório é um template para os grupos da disciplina. A proposta é com
 
 ## Descrição do jogo
 
-Descreva brevemente a ideia principal do jogo.
-
-Exemplo:
-
-> O jogo consiste em controlar um personagem que deve coletar moedas e evitar obstáculos. O jogador ganha pontos ao coletar itens e perde vidas ao colidir com obstáculos. A partida termina quando o tempo acaba ou quando o jogador perde todas as vidas.
+> Na tela, uma mesa virtual animada distribui as cartas para os avatares dos usuários, destacando-se a rodada blind onde a carta fica visível na "testa" de todos, menos na do próprio dono. O jogador controla suas apostas iniciais e a escolha das cartas em cada turno, com o objetivo de prever exatamente suas vitórias para não perder vidas e acumular a menor pontuação final possível. Durante a partida, os maiores desafios enfrentados são a dedução lógica na rodada cega e a adaptação estratégica constante, já que as regras proíbem que a soma das apostas de todos os jogadores seja igual ao número de cartas daquela rodada.
 
 ## Objetivo do jogador
 
-Explique o que o jogador precisa fazer para vencer ou avançar no jogo.
-
-Exemplo:
-
-> O objetivo é coletar a maior quantidade possível de itens antes que o tempo acabe, evitando colisões com os obstáculos.
+> Preservar todas as vidas e acumular a menor pontuação final possível
 
 ## Regras do jogo
 
-Liste as principais regras do jogo.
-
-Exemplo:
-
-- O jogador se movimenta usando as setas do teclado.
-- Cada item coletado aumenta a pontuação.
-- Colidir com um obstáculo reduz a quantidade de vidas.
-- A partida termina quando o jogador perde todas as vidas ou quando o tempo acaba.
+- Regra 1: O jogo comporta exatamente 4 jogadores, cada um iniciando com 3 vidas.
+- Regra 2: A partida termina imediatamente quando o jogador perde as suas 3 vidas, ou quando todos os seus oponentes perdem as 3 vidas.
+- Regra 3: Cada jogador terá um limite de tempo de 20 segundos para escolher a sua carta. Se o tempo esgotar, uma carta aleatória da mão será jogada automaticamente.
+- Regra 4: O jogo flui num ciclo contínuo de 5 distribuições de cartas: 1 carta por jogador na 1ª distribuição, 2 na 2ª, até 5 cartas na 5ª. Após isso, o ciclo recomeça.
+- Regra 5: O Dealer (quem distribui) da 1ª distribuição é escolhido aleatoriamente pelo sistema. Nas distribuições seguintes, o papel de Dealer passa para o jogador à direita do Dealer anterior.
+- Regra 6: A primeira pessoa a jogar a carta na mesa é sempre o jogador à direita do Dealer atual. Nos turnos subsequentes (dentro da mesma distribuição), o primeiro a jogar será sempre o jogador à esquerda de quem venceu o turno anterior.
+- Regra 7: O baralho possui 28 cartas, sendo a ordem de força absoluta: A (Mais forte) > 2 > 3 > 4 > 5 > 6 > 7 (Mais fraca).
+- Regra 8: Em caso de disputa entre Ases (Manilhas), a força é decidida pelos naipes: Paus > Copas > Espadas > Ouros.
+- Regra 9: Se duas ou mais cartas de valor igual forem jogadas na mesa, elas anulam-se mutuamente e são descartadas. O vencedor do turno será o jogador que colocou a próxima carta de maior valor que não foi anulada.
+- Regra 10: Em caso de empate total no valor das cartas, a turno é anulado.
 
 ## Controles
 
-Informe as teclas ou comandos utilizados no jogo.
-
-Exemplo:
-
-- Seta para cima: mover para cima
-- Seta para baixo: mover para baixo
-- Seta para esquerda: mover para esquerda
-- Seta para direita: mover para direita
-- Espaço: realizar ação
-- ESC: sair do jogo
+- Botão esquerdo do mouse: mover as cartas, selecionar as cartas, selecionar as opções de jogo
 
 ## Como executar o projeto
 
