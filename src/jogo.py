@@ -8,23 +8,23 @@ from src.config import (
     PRETO,
 )
 
-def executar_jogo():
+def executar_jogo(): 
 
-    tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
-    pygame.display.set_caption(TITULO_JOGO)
-    relogio = pygame.time.Clock()
+    tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))  #Cria a tela do jogo 
+    pygame.display.set_caption(TITULO_JOGO) #Define o título do jogo
+    relogio = pygame.time.Clock() #Objeto que controla o tempo 
 
-    rodando = True
-
-    while rodando:
+    rodando = True #Controla o loop
+ 
+    while rodando: #Roda o loop principal enquanto rodando for "true" 
         
-        relogio.tick(FPS)
+        relogio.tick(FPS) #Limita o FPS 
 
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                rodando = False
+        for evento in pygame.event.get(): #Coleta o que usuário fez e percorre cada um
+            if evento.type == pygame.QUIT: #Evento de "fechar a janela"
+                rodando = False #Para o loop 
 
-        tela.fill(PRETO)       
-        pygame.display.flip()  
+        tela.fill(PRETO)       #Pinta a tela com a cor preta
+        pygame.display.flip()  #Atualiza a janela com tudo que foi desenhado nessa tela 
 
         
