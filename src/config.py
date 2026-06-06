@@ -8,5 +8,3 @@ TITULO_JOGO = "Life of Cards"
 BRANCO = (255, 255, 255)
 PRETO = (0, 0, 0)
 CINZA = (212,212,212)
-
-CAMINHO_RECORDE = "data/recorde.txt"

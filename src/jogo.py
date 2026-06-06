@@ -6,24 +6,7 @@ from src.config import (
     FPS,
     TITULO_JOGO,
     PRETO,
-    CAMINHO_RECORDE,
-    CAMINHO_SPRITES,
 )
-
-from src.funcoes import (
-    calcular_pontos,
-    jogador_perdeu,
-    limitar_valor,
-    verificar_colisao,
-    tomar_dano,
-)
-
-from src.sprites import pegar_sprite
-from src.dados import (
-    salvar_recorde,
-    carregar_recorde,
-)
-
 
 def executar_jogo():
 
