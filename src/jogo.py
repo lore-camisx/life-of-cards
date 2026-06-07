@@ -1,30 +1,41 @@
 import pygame 
 
-from src.config import (
-    LARGURA_TELA,
-    ALTURA_TELA,
-    FPS,
-    TITULO_JOGO,
-    PRETO,
-)
+from src.config import LARGURA_TELA, ALTURA_TELA, FPS, TITULO_JOGO, PRETO
+from src.baralho import criar_baralho, distribuir_cartas
+from src.jogador import criar_jogadores, jogar_carta
+from src.entrada import tratar_eventos
+from src.interface import desenhar_tela, qual_carta_clicada
 
 def executar_jogo(): 
+    tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
+    pygame.display.set_caption(TITULO_JOGO)
+    relogio = pygame.time.Clock()
 
-    tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))  #Cria a tela do jogo 
-    pygame.display.set_caption(TITULO_JOGO) #Define o título do jogo
-    relogio = pygame.time.Clock() #Objeto que controla o tempo 
+    baralho = criar_baralho()
+    jogadores = criar_jogadores()
+    baralho, jogadores = distribuir_cartas(baralho, jogadores, 5)
+    
+    jogador_atual = jogadores[0]
+    turno = "jogador"
+    mesa = []
+    rects_cartas_mao = [] 
 
-    rodando = True #Controla o loop
+    rodando = True
  
-    while rodando: #Roda o loop principal enquanto rodando for "true" 
-        
-        relogio.tick(FPS) #Limita o FPS 
+    while rodando:
+        relogio.tick(FPS)
+        rodando, pos_mouse = tratar_eventos()
 
-        for evento in pygame.event.get(): #Coleta o que usuário fez e percorre cada um
-            if evento.type == pygame.QUIT: #Evento de "fechar a janela"
-                rodando = False #Para o loop 
+        if pos_mouse and turno == "jogador":
+            indice_clicado = qual_carta_clicada(pos_mouse, rects_cartas_mao)
+            
+            if indice_clicado is not None:
+                carta = jogar_carta(jogador_atual, indice_clicado)
+                
+                if carta:
+                    mesa.append(carta)
+                    turno = "oponente"
+                    print(f"[{jogador_atual['nome']}] jogou a carta: {carta['valor']} de {carta['naipe']}")
 
-        tela.fill(PRETO)       #Pinta a tela com a cor preta
-        pygame.display.flip()  #Atualiza a janela com tudo que foi desenhado nessa tela 
-
-        
+        desenhar_tela(tela)
+        pygame.display.flip()
