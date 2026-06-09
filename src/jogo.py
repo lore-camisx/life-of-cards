@@ -2,9 +2,9 @@ import pygame
 
 from src.config import LARGURA_TELA, ALTURA_TELA, FPS, TITULO_JOGO, PRETO
 from src.baralho import criar_baralho, distribuir_cartas
-from src.jogador import criar_jogadores, jogar_carta
+from src.jogador import criar_jogadores
 from src.entrada import tratar_eventos
-from src.interface import desenhar_tela, qual_carta_clicada
+from src.interface import qual_carta_clicada, atualizar_display
 
 def executar_jogo(): 
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -30,12 +30,11 @@ def executar_jogo():
             indice_clicado = qual_carta_clicada(pos_mouse, rects_cartas_mao)
             
             if indice_clicado is not None:
-                carta = jogar_carta(jogador_atual, indice_clicado)
+                carta = jogador_atual.jogar_carta(indice_clicado)
                 
                 if carta:
                     mesa.append(carta)
                     turno = "oponente"
-                    print(f"[{jogador_atual['nome']}] jogou a carta: {carta['valor']} de {carta['naipe']}")
+                    print(f"[{jogador_atual.nome}] jogou a carta: {carta['valor']} de {carta['naipe']}")
 
-        desenhar_tela(tela)
-        pygame.display.flip()
+        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
