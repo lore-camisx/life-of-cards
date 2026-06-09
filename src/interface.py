@@ -268,3 +268,163 @@ def qual_carta_clicada(pos_mouse, rects_cartas):
             return i
             
     return None
+
+import pygame
+from config import *
+
+
+def desenhar_mesa(tela):
+    """Pinta o fundo da tela com a cor da mesa (feltro verde)."""
+    tela.fill(COR_MESA)
+
+
+def desenhar_area_central(tela, fonte_media, fonte_pequena):
+    """Área central onde as cartas jogadas serão exibidas."""
+    rect = pygame.Rect(AREA_CENTRAL_X, AREA_CENTRAL_Y, AREA_CENTRAL_W, AREA_CENTRAL_H)
+
+    sombra = pygame.Rect(rect.x + 4, rect.y + 4, rect.width, rect.height)
+    pygame.draw.rect(tela, (15, 45, 15), sombra, border_radius=8)
+
+    pygame.draw.rect(tela, COR_AREA_CARTA, rect, border_radius=8)
+
+    pygame.draw.rect(tela, COR_BORDA, rect, width=2, border_radius=8)
+    pygame.draw.rect(tela, (255, 255, 200), rect.inflate(-6, -6), width=1, border_radius=6)
+
+    label = fonte_media.render("Cartas Jogadas", True, COR_TEXTO)
+    tela.blit(label, (rect.centerx - label.get_width() // 2, rect.y + 10))
+
+    slot_w, slot_h = 55, 80
+    total = 4
+    gap = 10
+    total_w = total * slot_w + (total - 1) * gap
+    start_x = rect.centerx - total_w // 2
+    slot_y = rect.y + 45
+
+    for i in range(total):
+        sx = start_x + i * (slot_w + gap)
+        slot_rect = pygame.Rect(sx, slot_y, slot_w, slot_h)
+        pygame.draw.rect(tela, (15, 50, 15), slot_rect, border_radius=5)
+        pygame.draw.rect(tela, (80, 120, 80), slot_rect, width=1, border_radius=5)
+
+        cx, cy = slot_rect.centerx, slot_rect.centery
+        pygame.draw.line(tela, (40, 80, 40), (cx - 8, cy), (cx + 8, cy), 1)
+        pygame.draw.line(tela, (40, 80, 40), (cx, cy - 8), (cx, cy + 8), 1)
+
+
+def _slot_rect_jogador(posicao):
+    """
+    Retorna o pygame.Rect do slot de cada jogador.
+    posicao: 'baixo' | 'esquerda' | 'cima' | 'direita'
+    """
+    cx, cy = LARGURA // 2, ALTURA // 2
+
+    if posicao == "baixo": 
+        return pygame.Rect(cx - SLOT_W // 2, ALTURA - SLOT_H - 20, SLOT_W, SLOT_H)
+    elif posicao == "esquerda":
+        return pygame.Rect(20, cy - SLOT_H // 2, SLOT_W, SLOT_H)
+    elif posicao == "cima": 
+        return pygame.Rect(cx - SLOT_W // 2, 20, SLOT_W, SLOT_H)
+    elif posicao == "direita": 
+        return pygame.Rect(LARGURA - SLOT_W - 20, cy - SLOT_H // 2, SLOT_W, SLOT_H)
+
+
+def desenhar_slot_jogador(tela, fontes, nome, vidas, posicao, eh_principal=False):
+    """
+    Desenha o slot (área) de um jogador na posição indicada.
+    fontes: dict com 'grande', 'media', 'pequena'
+    """
+    cor_fundo = COR_JOGADOR if eh_principal else COR_OPONENTE
+    rect = _slot_rect_jogador(posicao)
+
+    sombra = pygame.Rect(rect.x + 3, rect.y + 3, rect.width, rect.height)
+    pygame.draw.rect(tela, (0, 0, 0, 80), sombra, border_radius=8)
+
+    pygame.draw.rect(tela, cor_fundo, rect, border_radius=8)
+
+    espessura_borda = 3 if eh_principal else 1
+    pygame.draw.rect(tela, COR_BORDA, rect, width=espessura_borda, border_radius=8)
+
+    surf_nome = fontes["media"].render(nome, True, COR_TEXTO_NOME)
+    tela.blit(surf_nome, (rect.x + 10, rect.y + 10))
+
+    _desenhar_vidas(tela, fontes["pequena"], vidas, rect)
+
+    if eh_principal:
+        badge = fontes["pequena"].render("▶ VOCÊ", True, (255, 220, 50))
+        tela.blit(badge, (rect.right - badge.get_width() - 8, rect.y + 8))
+
+
+def _desenhar_vidas(tela, fonte, vidas, slot_rect):
+    """Desenha corações representando as vidas dentro do slot."""
+
+    label = fonte.render("Vidas:", True, COR_TEXTO)
+    tela.blit(label, (slot_rect.x + 10, slot_rect.y + 40))
+
+    # Corações preenchidos = vidas restantes, vazios = perdidas
+    max_vidas = 5
+    coracoes_x = slot_rect.x + 60
+    coracoes_y = slot_rect.y + 40
+
+    for i in range(max_vidas):
+        if i < vidas:
+            cor = COR_VIDA
+            simbolo = "♥"
+        else:
+            cor = (80, 60, 60)
+            simbolo = "♡"
+
+        surf = fonte.render(simbolo, True, cor)
+        tela.blit(surf, (coracoes_x + i * 22, coracoes_y))
+
+    contagem = fonte.render(f"{vidas}/{max_vidas}", True, (200, 200, 200))
+    tela.blit(contagem, (slot_rect.x + 10, slot_rect.y + 62))
+
+
+def desenhar_todos_jogadores(tela, fontes, jogadores):
+    """
+    Desenha os 4 slots de jogadores.
+    jogadores: lista de dicts com 'nome', 'vidas', 'posicao', 'principal'
+    """
+    for j in jogadores:
+        desenhar_slot_jogador(
+            tela, fontes,
+            nome=j["nome"],
+            vidas=j["vidas"],
+            posicao=j["posicao"],
+            eh_principal=j.get("principal", False),
+        )
+
+
+def desenhar_mensagem_status(tela, fonte, mensagem):
+    """Exibe a mensagem de status da partida no centro-inferior da tela."""
+    padding_x, padding_y = 20, 8
+    surf = fonte.render(mensagem, True, COR_TEXTO)
+    bg_w = surf.get_width() + padding_x * 2
+    bg_h = surf.get_height() + padding_y * 2
+
+    bg_x = LARGURA // 2 - bg_w // 2
+    bg_y = ALTURA - SLOT_H - 20 - bg_h - 10
+
+    bg_rect = pygame.Rect(bg_x, bg_y, bg_w, bg_h)
+    pygame.draw.rect(tela, (0, 0, 0), bg_rect, border_radius=6)
+    pygame.draw.rect(tela, COR_STATUS, bg_rect, width=1, border_radius=6)
+
+    tela.blit(surf, (bg_x + padding_x, bg_y + padding_y))
+
+
+def desenhar_titulo(tela, fonte):
+    """Nome do jogo no topo centralizado."""
+    surf = fonte.render("♠  LIFE OF CARDS  ♣", True, COR_TEXTO_NOME)
+    tela.blit(surf, (LARGURA // 2 - surf.get_width() // 2, 2))
+
+
+def renderizar_tudo(tela, fontes, jogadores, mensagem_status):
+    """
+    Função principal de renderização — chamada a cada frame pelo loop em jogo.py.
+    Ordem: mesa → área central → jogadores → status → título
+    """
+    desenhar_mesa(tela)
+    desenhar_area_central(tela, fontes["media"], fontes["pequena"])
+    desenhar_todos_jogadores(tela, fontes, jogadores)
+    desenhar_mensagem_status(tela, fontes["pequena"], mensagem_status)
+    desenhar_titulo(tela, fontes["media"])

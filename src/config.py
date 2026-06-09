@@ -1,28 +1,31 @@
-# Configurações centrais do jogo (tela, cores e caminhos de arquivos).
-LARGURA_TELA = 1280
-ALTURA_TELA = 720
+
+LARGURA = 1024
+ALTURA = 768
 FPS = 60
+TITULO = "Life of Cards"
 
-TITULO_JOGO = "Life of Cards"
+# Cores
+COR_MESA        = (34, 85, 34)      
+COR_AREA_CARTA  = (20, 60, 20)      
+COR_JOGADOR     = (180, 140, 80)    
+COR_OPONENTE    = (100, 100, 120)   
+COR_BORDA       = (200, 160, 80)    
+COR_TEXTO       = (255, 255, 255)  
+COR_TEXTO_NOME  = (255, 220, 100)  
+COR_VIDA        = (220, 50, 50)     
+COR_STATUS      = (200, 230, 200)
 
-BRANCO = (255, 255, 255)
-PRETO = (0, 0, 0)
-CINZA = (212, 212, 212)
-CINZA_ESCURO = (100, 100, 100)
-VERMELHO = (255, 0, 0)
-VERDE = (0, 255, 0)
+FONTE_GRANDE  = 28
+FONTE_MEDIA   = 20
+FONTE_PEQUENA = 16
 
-# Configurações de cartas
-LARGURA_CARTA = 60
-ALTURA_CARTA = 90
-ESPACAMENTO_CARTAS = 10
-ESPESSURA_BORDA_CARTA = 2
-COR_BORDA_CARTA = BRANCO
-COR_FUNDO_CARTA = CINZA_ESCURO
-COR_TEXTO_CARTA = BRANCO
-TAMANHO_FONTE_CARTA = 12
+JOGADOR_NOMES = ["Você", "Oponente 1", "Oponente 2", "Oponente 3"]
+JOGADOR_VIDAS = [5, 5, 5, 5] #talvez mudar para 3
 
-# Configurações de posicionamento
-MARGEM_INFERIOR = 100
-MARGEM_SUPERIOR = 50
-MARGEM_LATERAL = 50
+AREA_CENTRAL_X = LARGURA // 2 - 160
+AREA_CENTRAL_Y = ALTURA // 2 - 100
+AREA_CENTRAL_W = 320
+AREA_CENTRAL_H = 200
+
+SLOT_W = 220
+SLOT_H = 110
