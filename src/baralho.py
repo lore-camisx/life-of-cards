@@ -1,5 +1,5 @@
 import random
-from src.carta import criacao_cartas
+from src.carta import Carta
 from src.jogador import criar_jogadores
 
 def criar_baralho():
@@ -8,11 +8,11 @@ def criar_baralho():
     baralho = []
 
     naipes = ["Paus", "Copas", "Espadas", "Ouros"]
-    valores = ["A", 2, 3, 4, 5, 6, 7]
+    valores = ['A', '2', '3', '4', '5', '6', '7']
 
     for valor in valores:
         for naipe in naipes:
-            carta = criacao_cartas(valor, naipe)
+            carta = Carta(valor, naipe)
             baralho.append(carta)
 
     random.shuffle(baralho)

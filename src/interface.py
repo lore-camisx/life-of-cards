@@ -1,6 +1,6 @@
 import pygame
 from src.config import (
-    PRETO, BRANCO, CINZA, CINZA_ESCURO,
+    PRETO, BRANCO, CINZA, CINZA_ESCURO,  
     LARGURA_TELA, ALTURA_TELA,
     LARGURA_CARTA, ALTURA_CARTA, ESPACAMENTO_CARTAS,
     ESPESSURA_BORDA_CARTA, COR_BORDA_CARTA, COR_FUNDO_CARTA,
@@ -37,13 +37,13 @@ def desenhar_carta(tela, x, y, carta, mostrar_detalhes=True):
     if mostrar_detalhes and carta:
         fonte = pygame.font.Font(None, TAMANHO_FONTE_CARTA)
         
-        valor_texto = str(carta.get("valor", "?"))
+        valor_texto = str(carta.valor)
         naipe_abrev = {
             "Paus": "♣",
             "Copas": "♥",
             "Espadas": "♠",
             "Ouros": "♦"
-        }.get(carta.get("naipe", ""), "?")
+        }.get(carta.naipe, "?")
         
         # Texto principal (valor + naipe)
         texto_principal = fonte.render(f"{valor_texto}{naipe_abrev}", True, COR_TEXTO_CARTA)
@@ -270,10 +270,10 @@ def qual_carta_clicada(pos_mouse, rects_cartas):
     return None
 
 import pygame
-from config import *
+from src.config import *
 
 
-def desenhar_mesa(tela):
+def desenhar_fundo_mesa(tela):
     """Pinta o fundo da tela com a cor da mesa (feltro verde)."""
     tela.fill(COR_MESA)
 

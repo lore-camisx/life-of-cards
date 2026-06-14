@@ -1,10 +1,11 @@
 import pygame 
 
-from src.config import LARGURA_TELA, ALTURA_TELA, FPS, TITULO_JOGO, PRETO
+from src.config import LARGURA_TELA, ALTURA_TELA, FPS, TITULO_JOGO 
 from src.baralho import criar_baralho, distribuir_cartas
 from src.jogador import criar_jogadores
 from src.entrada import tratar_eventos
 from src.interface import qual_carta_clicada, atualizar_display
+from src.regras import jogada_automatica
 
 def executar_jogo(): 
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -35,8 +36,18 @@ def executar_jogo():
                 if carta:
                     mesa.append(carta)
                     turno = "oponente"
-                    print(f"[{jogador_atual.nome}] jogou a carta: {carta['valor']} de {carta['naipe']}")
+                    print(f"[{jogador_atual.nome}] jogou a carta: {carta.valor} de {carta.naipe}")
+        
+        if turno == "oponente":
+            
+            for oponente in jogadores[1:]:
+                carta_oponente = jogada_automatica(oponente)
 
+                if carta_oponente:
+                    mesa.append(carta_oponente)
+                    turno = "jogador"
+                    print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
+                
         rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
 
 import pygame
@@ -80,8 +91,8 @@ def estado_inicial():
 
 def main():
     pygame.init()
-    tela = pygame.display.set_mode((LARGURA, ALTURA))
-    pygame.display.set_caption(TITULO)
+    tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
+    pygame.display.set_caption(TITULO_JOGO)
     relogio = pygame.time.Clock()
 
     fontes = carregar_fontes()
