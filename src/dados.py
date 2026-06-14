@@ -17,3 +17,23 @@ def carregar_recorde(caminho_arquivo):
 
     except FileNotFoundError:
         return 0
+    
+def salvar_resultado(caminho_arquivo, resultado, jogadores, numero_partida):
+
+    with open(caminho_arquivo, "a", encoding="utf-8") as arquivo:
+        arquivo.write(f"Partida {numero_partida} \nResultado: {resultado}")
+        for jogador in jogadores:
+            arquivo.write(f"\n{jogador}")
+
+def carregar_historico(caminho_arquivo):
+    try:
+        with open(caminho_arquivo, "r", encoding="utf-8") as arquivo:
+            historico = arquivo.read().strip()
+
+            if historico == "":
+                return str("")
+
+            return str(historico)
+
+    except FileNotFoundError:
+        return str("")

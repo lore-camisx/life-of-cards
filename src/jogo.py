@@ -6,6 +6,7 @@ from src.jogador import criar_jogadores
 from src.entrada import tratar_eventos
 from src.interface import qual_carta_clicada, atualizar_display
 from src.regras import jogada_automatica
+from src.dados import salvar_resultado 
 
 def executar_jogo(): 
     tela = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -49,6 +50,8 @@ def executar_jogo():
                     print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
                 
         rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
+
+    salvar_resultado("data/resultado.txt", "indefinido", jogadores, numero_partida=1)
 
 import pygame
 import sys
