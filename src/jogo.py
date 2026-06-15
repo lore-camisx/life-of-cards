@@ -1,11 +1,13 @@
 import pygame 
+import sys
+import os
 
-from src.config import LARGURA_TELA, ALTURA_TELA, FPS, TITULO_JOGO 
+from src.config import *
 from src.baralho import criar_baralho, distribuir_cartas
 from src.jogador import criar_jogadores
 from src.entrada import tratar_eventos
-from src.interface import qual_carta_clicada, atualizar_display
-from src.regras import jogada_automatica
+from src.interface import qual_carta_clicada, atualizar_display, renderizar_tudo
+from src.regras import jogada_automatica, sortear_primeiro_dealer, passar_dealer
 from src.dados import salvar_resultado 
 
 def executar_jogo(): 
@@ -15,6 +17,22 @@ def executar_jogo():
 
     baralho = criar_baralho()
     jogadores = criar_jogadores()
+    
+    # ==========================================
+    # --- TESTE DO DEALER ROTATIVO (TPC-14) ---
+    # ==========================================
+    indice_dealer = sortear_primeiro_dealer(len(jogadores))
+    
+    print("\n--- TESTE DO DEALER ROTATIVO ---")
+    for distribuicao in range(1, 6):
+        nome_do_dealer = jogadores[indice_dealer].nome
+        print(f"Distribuição {distribuicao}: Dealer = {nome_do_dealer}")
+        
+        # Passa o dealer para o próximo jogador
+        indice_dealer = passar_dealer(indice_dealer, len(jogadores))
+    print("--------------------------------\n")
+    # ==========================================
+
     baralho, jogadores = distribuir_cartas(baralho, jogadores, 5)
     
     jogador_atual = jogadores[0]
@@ -33,38 +51,34 @@ def executar_jogo():
             
             if indice_clicado is not None:
                 carta = jogador_atual.jogar_carta(indice_clicado)
-                
                 if carta:
                     mesa.append(carta)
                     turno = "oponente"
                     print(f"[{jogador_atual.nome}] jogou a carta: {carta.valor} de {carta.naipe}")
         
         if turno == "oponente":
-            
             for oponente in jogadores[1:]:
                 carta_oponente = jogada_automatica(oponente)
-
                 if carta_oponente:
                     mesa.append(carta_oponente)
-                    turno = "jogador"
                     print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
+            
+            # Atualiza a mesa, dá um delayzinho pra ver as cartas e limpa
+            rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
+            pygame.time.delay(1000)
+            mesa.clear()
+            turno = "jogador"
                 
-        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
+        if turno != "oponente":
+            rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
 
     salvar_resultado("data/resultado.txt", "indefinido", jogadores, numero_partida=1)
 
-import pygame
-import sys
-import os
 
+# --- CÓDIGO DA SUA EQUIPE (NÃO MEXER) ---
 sys.path.insert(0, os.path.dirname(__file__))
 
-from config import *
-from interface import renderizar_tudo
-
-
 def carregar_fontes():
-    """Carrega as fontes usadas no jogo."""
     pygame.font.init()
     return {
         "grande":  pygame.font.SysFont("segoeui", FONTE_GRANDE, bold=True),
@@ -72,12 +86,7 @@ def carregar_fontes():
         "pequena": pygame.font.SysFont("segoeui", FONTE_PEQUENA),
     }
 
-
 def estado_inicial():
-    """
-    Retorna o estado inicial da partida:
-    lista de jogadores + mensagem de status.
-    """
     jogadores = [
         {"nome": JOGADOR_NOMES[0], "vidas": JOGADOR_VIDAS[0],
          "posicao": "baixo",    "principal": True},
@@ -90,7 +99,6 @@ def estado_inicial():
     ]
     mensagem = "Aguardando início da partida..."
     return jogadores, mensagem
-
 
 def main():
     pygame.init()
@@ -117,7 +125,6 @@ def main():
 
     pygame.quit()
     sys.exit()
-
 
 if __name__ == "__main__":
     main()
