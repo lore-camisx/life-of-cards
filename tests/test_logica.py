@@ -1,31 +1,66 @@
-from src.funcoes import calcular_pontos, jogador_perdeu, limitar_valor
+import unittest
+from src.jogador import Jogador
+from src.regras import comparar_cartas, avaliar_vencedor_turno, verificar_derrota, verificar_vitoria
 
 
-def test_calcular_pontos():
-    """Deve somar corretamente os pontos atuais com os pontos ganhos."""
-    assert calcular_pontos(10, 5) == 15
+class CartaSimples:
+    def __init__(self, valor, naipe):
+        self.valor = valor
+        self.naipe = naipe
 
 
-def test_jogador_perdeu_com_zero_vidas():
-    """Deve indicar derrota quando o total de vidas chega a zero."""
-    assert jogador_perdeu(0) is True
+class TestRegras(unittest.TestCase):
+    def test_comparacao_forca_cartas(self):
+        a_ouros = CartaSimples("A", "Ouros")
+        dois_paus = CartaSimples("2", "Paus")
+        dois_copas = CartaSimples("2", "Copas")
+        tres_espadas = CartaSimples("3", "Espadas")
+
+        self.assertEqual(comparar_cartas(a_ouros, dois_paus), a_ouros)
+        self.assertEqual(comparar_cartas(dois_copas, tres_espadas), dois_copas)
+
+    def test_desempate_entre_ases(self):
+        a_paus = CartaSimples("A", "Paus")
+        a_copas = CartaSimples("A", "Copas")
+        self.assertEqual(comparar_cartas(a_paus, a_copas), a_paus)
+
+    def test_anulacao_cartas_iguais_na_mesa(self):
+        j1 = Jogador("Jogador 1")
+        j1.carta_jogada = CartaSimples("A", "Paus")
+
+        j2 = Jogador("Jogador 2")
+        j2.carta_jogada = CartaSimples("A", "Copas")
+
+        j3 = Jogador("Jogador 3")
+        j3.carta_jogada = CartaSimples("2", "Ouros")
+
+        j4 = Jogador("Jogador 4")
+        j4.carta_jogada = CartaSimples("5", "Espadas")
+
+        vencedor = avaliar_vencedor_turno([j1, j2, j3, j4])
+        self.assertEqual(vencedor, j3)
+
+    def test_vitoria_e_derrota(self):
+        principal = Jogador("Principal")
+        oponente1 = Jogador("Oponente 1")
+        oponente2 = Jogador("Oponente 2")
+        oponente3 = Jogador("Oponente 3")
+
+        principal.vidas = 0
+        principal.eliminar()
+        self.assertTrue(verificar_derrota(principal))
+
+        principal.vidas = 3
+        principal.ativo = True
+        oponente1.vidas = 0
+        oponente1.eliminar()
+        oponente2.vidas = 0
+        oponente2.eliminar()
+        oponente3.vidas = 0
+        oponente3.eliminar()
+
+        self.assertTrue(verificar_vitoria([oponente1, oponente2, oponente3]))
 
 
-def test_jogador_nao_perdeu_com_vidas():
-    """Nao deve indicar derrota quando o jogador ainda tem vidas."""
-    assert jogador_perdeu(3) is False
-
-
-def test_limitar_valor_abaixo_do_minimo():
-    """Deve retornar o limite minimo quando o valor informado for menor."""
-    assert limitar_valor(-5, 0, 100) == 0
-
-
-def test_limitar_valor_acima_do_maximo():
-    """Deve retornar o limite maximo quando o valor informado for maior."""
-    assert limitar_valor(150, 0, 100) == 100
-
-
-def test_limitar_valor_dentro_do_intervalo():
-    """Deve manter o valor original quando ele ja estiver no intervalo."""
-    assert limitar_valor(50, 0, 100) == 50
+if __name__ == '__main__':
+    unittest.main()
