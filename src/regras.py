@@ -265,3 +265,17 @@ def jogada_automatica(jogador):
         indice = random.randint(0, jogador.tamanho_mao() - 1)
         return jogador.jogar_carta(indice)
     return None
+
+
+def sortear_primeiro_dealer(qtd_jogadores):
+    """
+    Sorteia aleatoriamente o índice do primeiro dealer.
+    """
+    return random.randint(0, qtd_jogadores - 1)
+
+
+def passar_dealer(indice_atual, qtd_jogadores):
+    """
+    Passa o dealer para o próximo jogador à direita seguindo a ordem incremental (sentido horário).
+    """
+    return (indice_atual + 1) % qtd_jogadores
