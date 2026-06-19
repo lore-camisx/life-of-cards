@@ -25,13 +25,20 @@ def desenhar_carta(tela, x, y, carta, mostrar_detalhes=True):
     if mostrar_detalhes and carta:
         fonte = pygame.font.Font(None, TAMANHO_FONTE_CARTA)
 
-        valor_texto = str(carta.valor)
+        # Trata o fato de que a carta pode ser um dicionário ou um objeto da classe Carta
+        if isinstance(carta, dict):
+            valor_texto = str(carta.get("valor", ""))
+            naipe_original = carta.get("naipe", "")
+        else:
+            valor_texto = str(getattr(carta, "valor", ""))
+            naipe_original = getattr(carta, "naipe", "")
+
         naipe_abrev = {
             "Paus": "♣",
             "Copas": "♥",
             "Espadas": "♠",
             "Ouros": "♦"
-        }.get(carta.naipe, "?")
+        }.get(naipe_original, "?")
 
         texto_principal = fonte.render(f"{valor_texto}{naipe_abrev}", True, COR_TEXTO_CARTA)
         texto_rect = texto_principal.get_rect(center=(x + LARGURA_CARTA // 2, y + ALTURA_CARTA // 2))
@@ -204,6 +211,18 @@ def _obter_atributos_carta(carta):
 
 
 def obter_forca_carta(carta):
+    """
+    Retorna a força total da carta usando preferencialmente o método forca_total()
+    da sua classe Carta para garantir compatibilidade com as novas regras.
+    """
+    if carta is None:
+        return -1
+        
+    # Se for um objeto real da sua classe Carta, usa a lógica nativa dela
+    if hasattr(carta, 'forca_total'):
+        return carta.forca_total()
+
+    # Fallback de segurança para dicionários (caso venham de mocks/testes do grupo)
     valor, naipe = _obter_atributos_carta(carta)
     if valor is None or naipe is None:
         return -1
@@ -220,6 +239,11 @@ def comparar_cartas(carta1, carta2):
 
 
 def avaliar_vencedor_turno(jogadores):
+    """
+    Avalia o vencedor do turno respeitando a regra do TPC-16:
+    - Cartas repetidas (valores iguais) se anulam e saem da disputa.
+    - Exceção: Os Ases ('A') NÃO se anulam se forem repetidos. Eles permanecem válidos e disputam pelo naipe.
+    """
     jogadores_com_jogada = [j for j in jogadores if getattr(j, "carta_jogada", None) is not None]
 
     if not jogadores_com_jogada:
@@ -228,14 +252,22 @@ def avaliar_vencedor_turno(jogadores):
     valores_na_mesa = [str(j.carta_jogada.valor) for j in jogadores_com_jogada]
     contagem_valores = Counter(valores_na_mesa)
 
-    jogadores_validos = [
-        j for j in jogadores_com_jogada
-        if contagem_valores[str(j.carta_jogada.valor)] == 1
-    ]
+    # Nova lista de jogadores válidos baseada na regra do TPC-16
+    jogadores_validos = []
+    for j in jogadores_com_jogada:
+        val_str = str(j.carta_jogada.valor)
+        
+        # Se for um Ás ('A'), ele ignora a regra de anulação por repetição e vai pro jogo
+        if val_str == "A":
+            jogadores_validos.append(j)
+        # Se for qualquer outro valor (2 a 7), só vale se for a única carta com esse valor na mesa
+        elif contagem_valores[val_str] == 1:
+            jogadores_validos.append(j)
 
     if not jogadores_validos:
         return None
 
+    # Encontra o vencedor baseado na força total computada
     vencedor = max(jogadores_validos, key=lambda j: obter_forca_carta(j.carta_jogada))
     return vencedor
 
