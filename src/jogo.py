@@ -11,8 +11,6 @@ from src.interface import (
 )
 from src.regras import (
     jogada_automatica,
-    sortear_primeiro_dealer,
-    passar_dealer,
     avaliar_vencedor_turno,
     verificar_fim_de_jogo
 )
@@ -35,21 +33,6 @@ def executar_jogo():
     momento_resultado = 0
     TEMPO_RESULTADO = 1500
     
-    # ==========================================
-    # --- TESTE DO DEALER ROTATIVO (TPC-14) ---
-    # ==========================================
-    indice_dealer = sortear_primeiro_dealer(len(jogadores))
-    
-    print("\n--- TESTE DO DEALER ROTATIVO ---")
-    for distribuicao in range(1, 6):
-        nome_do_dealer = jogadores[indice_dealer].nome
-        print(f"Distribuição {distribuicao}: Dealer = {nome_do_dealer}")
-        
-        # Passa o dealer para o próximo jogador
-        indice_dealer = passar_dealer(indice_dealer, len(jogadores))
-    print("--------------------------------\n")
-    # ==========================================
-
     quantidade_distribuicao = 1
     baralho, jogadores = distribuir_cartas(baralho, jogadores, quantidade_distribuicao)
 
