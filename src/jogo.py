@@ -110,6 +110,9 @@ def executar_jogo():
                 print("Fim de jogo! Você venceu.")
                 mensagem_fim_de_jogo = "Fim de jogo! Você venceu."
 
+            if estado_partida != "jogando":
+                salvar_resultado("data/resultado.txt", estado_partida, jogadores, numero_partida=1)
+
             for jogador in jogadores:
                 jogador.limpar_carta_jogada()
 
@@ -121,9 +124,7 @@ def executar_jogo():
 
         if estado_partida != "jogando":
             desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida)
-
-    pygame.display.flip()
-    salvar_resultado("data/resultado.txt", "indefinido", jogadores, numero_partida=1)
+            pygame.display.flip()
 
 import pygame
 import sys
@@ -218,15 +219,14 @@ def main():
 
                 if estado_partida == "derrota":
                     mensagem_fim_de_jogo = "Fim de jogo! Você perdeu."
-                    salvar_resultado("data/resultado.txt", "derrota", jogadores, numero_partida=1)
 
                 elif estado_partida == "vitoria":
                     mensagem_fim_de_jogo = "Fim de jogo! Você venceu."
-                    salvar_resultado("data/resultado.txt", "vitoria", jogadores, numero_partida=1)
 
         rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
 
         if estado_partida != "jogando":
+
             fonte = pygame.font.SysFont("segoeui", 40, bold=True)
             cor_texto = (255, 50, 50) if estado_partida == "derrota" else (50, 255, 50)
 

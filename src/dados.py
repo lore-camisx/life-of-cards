@@ -21,7 +21,7 @@ def carregar_recorde(caminho_arquivo):
 def salvar_resultado(caminho_arquivo, resultado, jogadores, numero_partida):
 
     with open(caminho_arquivo, "a", encoding="utf-8") as arquivo:
-        arquivo.write(f"Partida {numero_partida} \nResultado: {resultado}")
+        arquivo.write(f"\nPartida {numero_partida} \nResultado: {resultado}")
         for jogador in jogadores:
             arquivo.write(f"\n{jogador}")
 
