@@ -1,7 +1,9 @@
+from src.config import VIDAS_MAXIMAS
+
 class Jogador:
     """Representa um jogador no jogo Life of Cards."""
 
-    VIDAS_INICIAIS = 3
+    VIDAS_INICIAIS = VIDAS_MAXIMAS
 
     def __init__(self, nome, id_jogador=None):
         """
