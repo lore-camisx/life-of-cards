@@ -28,6 +28,8 @@ Em cada rodada, o jogador escolhe uma carta usando o mouse. Os oponentes jogam a
 
 Os jogadores que não vencerem a rodada perdem uma vida. A partida termina quando o jogador perde todas as suas vidas ou quando todos os oponentes são eliminados.
 
+Durante o turno, a tela informa o tempo restante, a quantidade de cartas da distribuição e o resultado de cada rodada.
+
 ## Objetivo do jogador
 
 O objetivo é preservar suas três vidas e eliminar os três oponentes antes de ser eliminado.
@@ -45,11 +47,19 @@ O objetivo é preservar suas três vidas e eliminar os três oponentes antes de 
 - Quando existem dois ou mais Ases, vence o naipe mais forte: Paus > Copas > Espadas > Ouros.
 - Cartas repetidas de valores entre 2 e 7 anulam-se.
 - Se todas as cartas válidas forem anuladas, a rodada termina sem vencedor e ninguém perde vida.
+- O jogador possui 20 segundos para escolher uma carta.
+- Caso o tempo termine, uma carta da mão é jogada automaticamente.
+- Sistema de dealer rotativo.
+- Definição da ordem inicial das jogadas com base no dealer.
 
 ## Controles
 
 - Botão esquerdo do mouse: selecionar e jogar uma carta.
 - ESC: fechar o jogo.
+
+## Histórico de partidas
+
+Ao final da partida, o resultado, o número da partida e o estado dos jogadores são registrados em `data/resultado.txt`.
 
 ## Como executar o projeto
 
