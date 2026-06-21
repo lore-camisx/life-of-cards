@@ -6,11 +6,8 @@ def criar_baralho():
     """Função que monta o baralho do zero."""
     baralho = []
 
-    naipes = ["Paus", "Copas", "Espadas", "Ouros"]
-    valores = ['A', '2', '3', '4', '5', '6', '7']
-
-    for valor in valores:
-        for naipe in naipes:
+    for valor in Carta.VALORES:
+        for naipe in Carta.NAIPES:
             carta = Carta(valor, naipe)
             baralho.append(carta)
 
@@ -34,10 +31,6 @@ def distribuir_cartas(baralho, jogadores, quantidade):
         for _ in range(quantidade):
             if baralho:
                 carta = baralho.pop(0)
-
-                if hasattr(jogador, 'receber_carta'):
-                    jogador.receber_carta(carta)
-                else:
-                    jogador["mao"].append(carta)
+                jogador.receber_carta(carta)
 
     return baralho, jogadores
