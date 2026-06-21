@@ -311,8 +311,42 @@ def desenhar_mesa(tela, mesa):
         y = y_centro + i * 10
         desenhar_carta(tela, x, y, carta, mostrar_detalhes=True)
 
+def desenhar_distribuicao(tela, quantidade):
+    """Mostra a quantidade de cartas da distribuição atual."""
 
-def atualizar_display(tela, jogadores, mesa, rects_cartas_mao):
+    fonte = pygame.font.SysFont("segoeui", 20, bold=True)
+
+    palavra = "carta" if quantidade == 1 else "cartas"
+    mensagem = f"Distribuição: {quantidade} {palavra}"
+
+    texto = fonte.render(
+        mensagem,
+        True,
+        COR_TEXTO_NOME
+    )
+
+    fundo = texto.get_rect(topleft=(20, 20))
+    fundo = fundo.inflate(20, 12)
+
+    pygame.draw.rect(
+        tela,
+        (20, 55, 25),
+        fundo,
+        border_radius=6
+    )
+
+    pygame.draw.rect(
+        tela,
+        COR_BORDA_CARTA,
+        fundo,
+        width=2,
+        border_radius=6
+    )
+
+    tela.blit(texto, texto.get_rect(center=fundo.center))
+
+
+def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao=None):
     """
     Orquestra o desenho completo da tela com todos os elementos.
     
@@ -342,6 +376,9 @@ def atualizar_display(tela, jogadores, mesa, rects_cartas_mao):
         
         # Cartas da mesa
         desenhar_mesa(tela, mesa)
+
+    if quantidade_distribuicao is not None:
+        desenhar_distribuicao(tela, quantidade_distribuicao)
     
     pygame.display.flip()
     return rects_cartas_mao

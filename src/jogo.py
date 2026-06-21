@@ -151,7 +151,7 @@ def executar_jogo():
                 print(f"Nova distribuição: {quantidade_distribuicao} cartas")
 
         tela.fill(COR_MESA)        
-        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
+        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao)
 
         if estado_partida != "jogando":
             desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida)
