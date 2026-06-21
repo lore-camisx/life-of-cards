@@ -56,10 +56,6 @@ class Jogador:
         """
         return self.ativo and self.vidas > 0
 
-    def esta_vivo(self):
-        """Alias para manter compatibilidade com regras e testes."""
-        return self.esta_ativo()
-
     def tamanho_mao(self):
         """
         Retorna a quantidade de cartas na mão.
@@ -85,14 +81,8 @@ class Jogador:
 
     def __str__(self):
         """Representação em string do jogador."""
-        status = "Ativo" if self.ativo else "Eliminado"
+        status = "Ativo" if self.esta_ativo() else "Eliminado"
         return f"{self.nome} | Vidas: {self.vidas} | Cartas: {len(self.mao)} | Status: {status}"
-
-
-def criar_jogador(nome, id_jogador=None):
-    """Função auxiliar para criar um jogador."""
-    return Jogador(nome, id_jogador)
-
 
 def criar_jogadores():
     """
