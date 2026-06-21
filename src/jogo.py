@@ -33,6 +33,9 @@ def executar_jogo():
 
     momento_jogada = 0
     TEMPO_OPONENTES = 1000
+
+    momento_resultado = 0
+    TEMPO_RESULTADO = 1500
     
     # ==========================================
     # --- TESTE DO DEALER ROTATIVO (TPC-14) ---
@@ -77,6 +80,7 @@ def executar_jogo():
                 if carta:
                     mesa.append(carta)
                     turno = "oponente"
+                    momento_jogada = pygame.time.get_ticks()
                     print(f"[{jogador_principal.nome}] jogou a carta: {carta.valor} de {carta.naipe}")
         
         tempo_atual = pygame.time.get_ticks()
@@ -87,7 +91,6 @@ def executar_jogo():
                 carta_oponente = jogada_automatica(oponente)
 
                 if carta_oponente:
-                    momento_jogada = pygame.time.get_ticks()
                     mesa.append(carta_oponente)
                     turno = "jogador"
                     print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
@@ -120,6 +123,10 @@ def executar_jogo():
             if estado_partida != "jogando":
                 salvar_resultado("data/resultado.txt", estado_partida, jogadores, numero_partida=1)
 
+            turno = "resultado"
+            momento_resultado = pygame.time.get_ticks()
+
+        if (turno == "resultado" and tempo_atual - momento_resultado >= TEMPO_RESULTADO):
             for jogador in jogadores:
                 jogador.limpar_carta_jogada()
 

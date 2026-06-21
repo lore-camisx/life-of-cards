@@ -340,17 +340,27 @@ def desenhar_mesa(tela, mesa):
     if not mesa:
         return
     
-    # Posição central
-    x_centro = (LARGURA_TELA - LARGURA_CARTA) // 2
-    y_centro = (ALTURA_TELA - ALTURA_CARTA) // 2
+    centro_x = LARGURA_TELA // 2
+    centro_y = ALTURA_TELA // 2
+
+    posicoes = [
+    # jogador principal — abaixo
+        (centro_x - LARGURA_CARTA // 2, centro_y + 60),
+
+    # oponente superior — acima
+        (centro_x - LARGURA_CARTA // 2, centro_y - ALTURA_CARTA - 60),
+
+    # oponente direito
+        (centro_x + 100, centro_y - ALTURA_CARTA // 2),
+
+    # oponente esquerdo
+        (centro_x - LARGURA_CARTA - 100, centro_y - ALTURA_CARTA // 2),
+    ]
     
-    # Desenha no máximo as últimas 3 cartas sobrepostas
-    cartas_visiaveis = mesa[-3:] if len(mesa) > 3 else mesa
-    
-    for i, carta in enumerate(cartas_visiaveis):
-        x = x_centro + i * 20
-        y = y_centro + i * 10
-        desenhar_carta(tela, x, y, carta, mostrar_detalhes=True)
+    for i, carta in enumerate(mesa):
+        if i < len(posicoes):
+            x, y = posicoes[i]
+            desenhar_carta(tela, x, y, carta, mostrar_detalhes=True)
 
 def desenhar_distribuicao(tela, quantidade):
     """Mostra a quantidade de cartas da distribuição atual."""
