@@ -11,7 +11,7 @@ from src.interface import (
     desenhar_cartas_oponente_direita, qual_carta_clicada
 )
 from src.jogador import Jogador, criar_jogadores
-from src.carta import criacao_cartas
+from src.carta import Carta
 from src.config import LARGURA_TELA, ALTURA_TELA
 
 
@@ -24,7 +24,7 @@ def test_desenhar_carta_sem_pygame_error():
     # Cria superfície para desenhar
     tela = pygame.Surface((LARGURA_TELA, ALTURA_TELA))
     
-    carta = criacao_cartas("A", "Copas")
+    carta = Carta("A", "Copas")
     
     try:
         rect = desenhar_carta(tela, 10, 10, carta, mostrar_detalhes=True)
@@ -62,7 +62,7 @@ def test_desenhar_mao_jogador_com_cartas():
     jogador = Jogador("Teste")
     
     for i in range(3):
-        jogador.receber_carta(criacao_cartas("A", "Copas"))
+        jogador.receber_carta(Carta("A", "Copas"))
     
     rects = []
     
@@ -128,7 +128,7 @@ def test_desenhar_cartas_oponentes():
     jogador = Jogador("Oponente")
     
     for i in range(2):
-        jogador.receber_carta(criacao_cartas("2", "Espadas"))
+        jogador.receber_carta(Carta("2", "Espadas"))
     
     try:
         rects_topo = desenhar_cartas_oponente_topo(tela, jogador)
@@ -152,7 +152,7 @@ def test_posicionamento_cartas():
     jogador = Jogador("Teste")
     
     for i in range(5):
-        jogador.receber_carta(criacao_cartas("A", "Copas"))
+        jogador.receber_carta(Carta("A", "Copas"))
     
     rects = []
     

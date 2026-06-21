@@ -19,12 +19,12 @@ class TestRegras(unittest.TestCase):
         self.assertEqual(comparar_cartas(a_ouros, dois_paus), a_ouros)
         self.assertEqual(comparar_cartas(dois_copas, tres_espadas), dois_copas)
 
-    def test_desempate_entre_ases(self):
+    def test_ases_repetidos_desempatam_pelo_naipe(self):
         a_paus = CartaSimples("A", "Paus")
         a_copas = CartaSimples("A", "Copas")
         self.assertEqual(comparar_cartas(a_paus, a_copas), a_paus)
 
-    def test_anulacao_cartas_iguais_na_mesa(self):
+    def test_ases_iguais_na_mesa_desempatam_pelo_naipe(self):
         j1 = Jogador("Jogador 1")
         j1.carta_jogada = CartaSimples("A", "Paus")
 
@@ -38,7 +38,7 @@ class TestRegras(unittest.TestCase):
         j4.carta_jogada = CartaSimples("5", "Espadas")
 
         vencedor = avaliar_vencedor_turno([j1, j2, j3, j4])
-        self.assertEqual(vencedor, j3)
+        self.assertEqual(vencedor, j1)
 
     def test_vitoria_e_derrota(self):
         principal = Jogador("Principal")
