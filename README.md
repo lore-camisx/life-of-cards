@@ -10,49 +10,54 @@ Projeto final da disciplina de Introdução a Algoritmos/Programação, desenvol
 - Nome 1: Lorrainny Camille Aparecida 
 - Nome 2: Matheus Oliveira Costa Torres
 - Nome 3: Rafael Henrique da Pena Duarte
-- Nome 4: Enzo Espíndola Sousa Broilo Rezende *
+- Nome 4: Enzo Espíndola Sousa Broilo Rezende 
 
 ## Estrutura do projeto
 
 - `main.py`: ponto de entrada da aplicação.
-- `src/`: código-fonte principal do jogo (loop, regras, sprites e dados).
-- `assets/`: imagens, fontes e sons.
-- `data/`: arquivos persistentes (recorde/ranking).
-- `tests/`: testes unitários com `pytest`.
+- `src/`: código-fonte do jogo, incluindo cartas, jogadores, regras, interface e dados.
+- `data/`: histórico dos resultados das partidas.
+- `tests/`: testes de lógica, interface e integração.
 - `docs/`: documentação do projeto, incluindo proposta inicial.
 
 ## Descrição do jogo
 
-> Na tela, uma mesa virtual animada distribui as cartas para os avatares dos usuários, destacando-se a rodada blind onde a carta fica visível na "testa" de todos, menos na do próprio dono. O jogador controla suas apostas iniciais e a escolha das cartas em cada turno, com o objetivo de prever exatamente suas vitórias para não perder vidas e acumular a menor pontuação final possível. Durante a partida, os maiores desafios enfrentados são a dedução lógica na rodada cega e a adaptação estratégica constante, já que as regras proíbem que a soma das apostas de todos os jogadores seja igual ao número de cartas daquela rodada.
+Life of Cards é um jogo de cartas para quatro jogadores, sendo um jogador controlado pelo usuário e três oponentes controlados pelo computador. 
+
+Em cada rodada, o jogador escolhe uma carta usando o mouse. Os oponentes jogam automaticamente e as cartas são comparadas conforme a força da carta. As cartas seguem a ordem A, 2, 3, 4, 5, 6 e 7, da mais forte para a mais fraca.
+
+Os jogadores que não vencerem a rodada perdem uma vida. A partida termina quando o jogador perde todas as suas vidas ou quando todos os oponentes são eliminados.
 
 ## Objetivo do jogador
 
-> Preservar todas as vidas e acumular a menor pontuação final possível
+O objetivo é preservar suas três vidas e eliminar os três oponentes antes de ser eliminado.
 
 ## Regras do jogo
 
-- Regra 1: O jogo comporta exatamente 4 jogadores, cada um iniciando com 3 vidas.
-- Regra 2: A partida termina imediatamente quando o jogador perde as suas 3 vidas, ou quando todos os seus oponentes perdem as 3 vidas.
-- Regra 3: Cada jogador terá um limite de tempo de 20 segundos para escolher a sua carta. Se o tempo esgotar, uma carta aleatória da mão será jogada automaticamente.
-- Regra 4: O jogo flui num ciclo contínuo de 5 distribuições de cartas: 1 carta por jogador na 1ª distribuição, 2 na 2ª, até 5 cartas na 5ª. Após isso, o ciclo recomeça.
-- Regra 5: O Dealer (quem distribui) da 1ª distribuição é escolhido aleatoriamente pelo sistema. Nas distribuições seguintes, o papel de Dealer passa para o jogador à direita do Dealer anterior.
-- Regra 6: A primeira pessoa a jogar a carta na mesa é sempre o jogador à direita do Dealer atual. Nos turnos subsequentes (dentro da mesma distribuição), o primeiro a jogar será sempre o jogador à esquerda de quem venceu o turno anterior.
-- Regra 7: O baralho possui 28 cartas, sendo a ordem de força absoluta: A (Mais forte) > 2 > 3 > 4 > 5 > 6 > 7 (Mais fraca).
-- Regra 8: Em caso de disputa entre Ases (Manilhas), a força é decidida pelos naipes: Paus > Copas > Espadas > Ouros.
-- Regra 9: Se duas ou mais cartas de valor igual forem jogadas na mesa, elas anulam-se mutuamente e são descartadas. O vencedor do turno será o jogador que colocou a próxima carta de maior valor que não foi anulada.
-- Regra 10: Em caso de empate total no valor das cartas, a turno é anulado.
+- O jogo possui quatro jogadores: um jogador principal e três oponentes automáticos.
+- Cada jogador começa com três vidas.
+- Em cada rodada, o jogador principal escolhe uma carta e os oponentes jogam automaticamente.
+- O vencedor da rodada mantém suas vidas. Todos os outros jogadores ativos perdem uma vida.
+- Um jogador é eliminado quando suas vidas chegam a zero.
+- O jogador vence ao eliminar todos os oponentes e perde ao ficar sem vidas.
+- As distribuições seguem o ciclo de 1, 2, 3, 4 e 5 cartas. Depois, o ciclo volta para uma carta.
+- O baralho possui 28 cartas. A ordem de força é: A > 2 > 3 > 4 > 5 > 6 > 7.
+- Quando existem dois ou mais Ases, vence o naipe mais forte: Paus > Copas > Espadas > Ouros.
+- Cartas repetidas de valores entre 2 e 7 anulam-se.
+- Se todas as cartas válidas forem anuladas, a rodada termina sem vencedor e ninguém perde vida.
 
 ## Controles
 
-- Botão esquerdo do mouse: mover as cartas, selecionar as cartas, selecionar as opções de jogo
+- Botão esquerdo do mouse: selecionar e jogar uma carta.
+- ESC: fechar o jogo.
 
 ## Como executar o projeto
 
 ### 1. Clonar o repositório
 
 ```bash
-git clone LINK_DO_REPOSITORIO
-cd NOME_DA_PASTA
+git clone https://github.com/lore-camisx/life-of-cards.git
+cd life-of-cards
 pip install -r requirements.txt
 python main.py
 ```
@@ -60,7 +65,9 @@ python main.py
 ## Como executar os testes
 
 ```bash
-python -m pytest
+python -m unittest discover -s tests -p "test_*.py" -v
+python tests/test_interface.py
+python tests/test_integracao.py
 ```
 
 ## Checklist mínimo para entrega
