@@ -64,6 +64,7 @@ def executar_jogo():
 
     estado_partida = "jogando"
     mensagem_fim_de_jogo = ""
+    mensagem_resultado = ""
 
     rodando = True
 
@@ -99,6 +100,7 @@ def executar_jogo():
 
             if vencedor_turno is not None:
                 print(f"Vencedor da rodada: {vencedor_turno.nome}")
+                mensagem_resultado = (f"{vencedor_turno.nome} venceu a rodada!")
 
                 for jogador in jogadores:
                     if jogador != vencedor_turno:
@@ -109,6 +111,7 @@ def executar_jogo():
 
             else:
                 print("Rodada anulada: não houve vencedor")
+                mensagem_resultado = "Rodada anulada!"
 
             estado_partida = verificar_fim_de_jogo(jogador_principal, oponentes)
 
@@ -131,6 +134,7 @@ def executar_jogo():
                 jogador.limpar_carta_jogada()
 
             mesa.clear()
+            mensagem_resultado = ""
             turno = "jogador"
 
             jogadores_ativos_sem_cartas = all(
@@ -164,7 +168,7 @@ def executar_jogo():
                 print(f"Nova distribuição: {quantidade_distribuicao} cartas")
 
         tela.fill(COR_MESA)        
-        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno)
+        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno, mensagem_resultado)
 
         if estado_partida != "jogando":
             desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida)
@@ -257,15 +261,18 @@ def main():
                     j.limpar_carta_jogada()
 
                 mesa.clear()
+                mensagem_resultado = ""
                 turno = "jogador"
 
                 estado_partida = verificar_fim_de_jogo(jogador_principal, oponentes)
+                mensagem_resultado = ""
 
                 if estado_partida == "derrota":
                     mensagem_fim_de_jogo = "Fim de jogo! Você perdeu."
 
                 elif estado_partida == "vitoria":
                     mensagem_fim_de_jogo = "Fim de jogo! Você venceu."
+                    mensagem_resultado = f"{vencedor_turno.nome} venceu a rodada!"
 
         rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
 
