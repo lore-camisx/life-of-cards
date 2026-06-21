@@ -4,6 +4,8 @@ ALTURA_TELA = 768
 FPS = 60
 TITULO_JOGO = "Life of Cards"
 
+VIDAS_MAXIMAS = 3
+
 # Cores básicas
 PRETO          = (0, 0, 0)
 BRANCO         = (255, 255, 255)
@@ -26,7 +28,7 @@ FONTE_MEDIA   = 20
 FONTE_PEQUENA = 16
 
 JOGADOR_NOMES = ["Você", "Oponente 1", "Oponente 2", "Oponente 3"]
-JOGADOR_VIDAS = [5, 5, 5, 5] #talvez mudar para 3
+JOGADOR_VIDAS = [VIDAS_MAXIMAS] * 4
 
 AREA_CENTRAL_X = LARGURA_TELA // 2 - 160
 AREA_CENTRAL_Y = ALTURA_TELA // 2 - 100
@@ -55,4 +57,4 @@ LARGURA = LARGURA_TELA
 ALTURA = ALTURA_TELA
 COR_TELA = COR_MESA
 
-VIDAS_MAXIMAS = 3
+

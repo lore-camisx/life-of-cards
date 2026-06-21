@@ -1,3 +1,4 @@
+"""Representa uma carta com valor, naipe e força."""
 class Carta:
     VALORES = ['A', '2', '3', '4', '5', '6', '7']
     NAIPES = ['Paus', 'Copas', 'Espadas', 'Ouros']
