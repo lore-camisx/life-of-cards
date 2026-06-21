@@ -67,12 +67,12 @@ def executar_jogo():
             indice_clicado = qual_carta_clicada(pos_mouse, rects_cartas_mao)
             
             if indice_clicado is not None:
-                carta = jogador_atual.jogar_carta(indice_clicado)
+                carta = jogador_principal.jogar_carta(indice_clicado)
                 
                 if carta:
                     mesa.append(carta)
                     turno = "oponente"
-                    print(f"[{jogador_atual.nome}] jogou a carta: {carta.valor} de {carta.naipe}")
+                    print(f"[{jogador_principal.nome}] jogou a carta: {carta.valor} de {carta.naipe}")
         
         if turno == "oponente":
             

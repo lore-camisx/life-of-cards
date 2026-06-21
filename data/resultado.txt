@@ -13,4 +13,19 @@ Resultado: indefinido
 Jogador 01 | Vidas: 3 | Cartas: 0 | Status: Ativo
 Jogador 02 | Vidas: 3 | Cartas: 0 | Status: Ativo
 Jogador 03 | Vidas: 3 | Cartas: 0 | Status: Ativo
+Jogador 04 | Vidas: 3 | Cartas: 0 | Status: AtivoPartida 1 
+Resultado: indefinido
+Jogador 01 | Vidas: 3 | Cartas: 0 | Status: Ativo
+Jogador 02 | Vidas: 3 | Cartas: 0 | Status: Ativo
+Jogador 03 | Vidas: 3 | Cartas: 0 | Status: Ativo
+Jogador 04 | Vidas: 3 | Cartas: 0 | Status: AtivoPartida 1 
+Resultado: indefinido
+Jogador 01 | Vidas: 3 | Cartas: 0 | Status: Ativo
+Jogador 02 | Vidas: 3 | Cartas: 0 | Status: Ativo
+Jogador 03 | Vidas: 3 | Cartas: 0 | Status: Ativo
+Jogador 04 | Vidas: 3 | Cartas: 0 | Status: AtivoPartida 1 
+Resultado: indefinido
+Jogador 01 | Vidas: 3 | Cartas: 0 | Status: Ativo
+Jogador 02 | Vidas: 3 | Cartas: 0 | Status: Ativo
+Jogador 03 | Vidas: 3 | Cartas: 0 | Status: Ativo
 Jogador 04 | Vidas: 3 | Cartas: 0 | Status: Ativo
