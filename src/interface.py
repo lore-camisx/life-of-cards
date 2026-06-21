@@ -114,7 +114,8 @@ def desenhar_carta(tela, x, y, carta, mostrar_detalhes=True):
     return rect
 
 def criar_texto_jogador(jogador):
-    """Monta o texto visual com as informações do jogador."""
+    if jogador.esta_eliminado():
+        return f"{jogador.nome} — ELIMINADO"
 
     coracoes = "♥" * jogador.vidas
     quantidade = len(jogador.mao)
@@ -140,8 +141,21 @@ def desenhar_mao_jogador(tela, jogador, rects_cartas):
     
     cartas = jogador.mao
     total_cartas = len(cartas)
-    
+
     if total_cartas == 0:
+        fonte_nome = pygame.font.SysFont("segoeuisymbol", 20)
+        informacoes = criar_texto_jogador(jogador)
+        texto_nome = fonte_nome.render(
+            informacoes,
+            True,
+            COR_TEXTO_NOME
+        )
+
+        texto_rect = texto_nome.get_rect(
+            center=(LARGURA_TELA // 2, ALTURA_TELA - 130)
+        )
+
+        tela.blit(texto_nome, texto_rect)
         return rects_cartas
     
     # Calcula largura total
@@ -188,6 +202,15 @@ def desenhar_cartas_oponente_topo(tela, jogador, y_pos=MARGEM_SUPERIOR):
     total_cartas = len(cartas)
     
     if total_cartas == 0:
+        fonte_nome = pygame.font.SysFont("segoeuisymbol", 20)
+        informacoes = criar_texto_jogador(jogador)
+        texto_nome = fonte_nome.render(informacoes, True, COR_TEXTO_NOME)
+
+        texto_rect = texto_nome.get_rect(
+            center=(LARGURA_TELA // 2, 120)
+        )
+
+        tela.blit(texto_nome, texto_rect)
         return rects_cartas
     
     largura_total = total_cartas * LARGURA_CARTA + (total_cartas - 1) * ESPACAMENTO_CARTAS
@@ -228,6 +251,15 @@ def desenhar_cartas_oponente_esquerda(tela, jogador, x_pos=MARGEM_LATERAL):
     total_cartas = len(cartas)
     
     if total_cartas == 0:
+        fonte_nome = pygame.font.SysFont("segoeuisymbol", 20)
+        informacoes = criar_texto_jogador(jogador)
+        texto_nome = fonte_nome.render(informacoes, True, COR_TEXTO_NOME)
+
+        texto_rect = texto_nome.get_rect(
+            midleft=(x_pos + LARGURA_CARTA + 10, ALTURA_TELA // 2)
+        )
+
+        tela.blit(texto_nome, texto_rect)
         return rects_cartas
     
     altura_total = total_cartas * ALTURA_CARTA + (total_cartas - 1) * ESPACAMENTO_CARTAS
@@ -270,6 +302,15 @@ def desenhar_cartas_oponente_direita(tela, jogador, x_pos=None):
     total_cartas = len(cartas)
     
     if total_cartas == 0:
+        fonte_nome = pygame.font.SysFont("segoeuisymbol", 20)
+        informacoes = criar_texto_jogador(jogador)
+        texto_nome = fonte_nome.render(informacoes, True, COR_TEXTO_NOME)
+
+        texto_rect = texto_nome.get_rect(
+            midright=(x_pos - 10, ALTURA_TELA // 2)
+        )
+
+        tela.blit(texto_nome, texto_rect)
         return rects_cartas
     
     altura_total = total_cartas * ALTURA_CARTA + (total_cartas - 1) * ESPACAMENTO_CARTAS
