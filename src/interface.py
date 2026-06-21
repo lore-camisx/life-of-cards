@@ -345,8 +345,44 @@ def desenhar_distribuicao(tela, quantidade):
 
     tela.blit(texto, texto.get_rect(center=fundo.center))
 
+def desenhar_indicador_turno(tela, turno):
+    """Mostra quem deve jogar."""
 
-def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao=None):
+    fonte = pygame.font.SysFont("segoeui", 22, bold=True)
+
+    if turno == "jogador":
+        mensagem = "SUA VEZ"
+        cor = (255, 220, 80)
+    else:
+        mensagem = "OPONENTES JOGANDO"
+        cor = (210, 210, 220)
+
+    texto = fonte.render(mensagem, True, cor)
+
+    texto_rect = texto.get_rect(
+        center=(LARGURA_TELA // 2, ALTURA_TELA // 2 - 80)
+    )
+
+    fundo_rect = texto_rect.inflate(30, 16)
+
+    pygame.draw.rect(
+        tela,
+        (15, 45, 20),
+        fundo_rect,
+        border_radius=7
+    )
+
+    pygame.draw.rect(
+        tela,
+        cor,
+        fundo_rect,
+        width=2,
+        border_radius=7
+    )
+
+    tela.blit(texto, texto_rect)
+
+def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao=None,turno=None):
     """
     Orquestra o desenho completo da tela com todos os elementos.
     
@@ -379,6 +415,9 @@ def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distri
 
     if quantidade_distribuicao is not None:
         desenhar_distribuicao(tela, quantidade_distribuicao)
+
+    if turno is not None:
+        desenhar_indicador_turno(tela, turno)
     
     pygame.display.flip()
     return rects_cartas_mao

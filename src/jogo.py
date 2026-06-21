@@ -30,6 +30,9 @@ def executar_jogo():
 
     baralho = criar_baralho()
     jogadores = criar_jogadores()
+
+    momento_jogada = 0
+    TEMPO_OPONENTES = 1000
     
     # ==========================================
     # --- TESTE DO DEALER ROTATIVO (TPC-14) ---
@@ -76,12 +79,15 @@ def executar_jogo():
                     turno = "oponente"
                     print(f"[{jogador_principal.nome}] jogou a carta: {carta.valor} de {carta.naipe}")
         
-        if turno == "oponente" and estado_partida == "jogando":
+        tempo_atual = pygame.time.get_ticks()
+
+        if (turno == "oponente" and estado_partida == "jogando" and tempo_atual - momento_jogada >= TEMPO_OPONENTES):
             
             for oponente in jogadores[1:]:
                 carta_oponente = jogada_automatica(oponente)
 
                 if carta_oponente:
+                    momento_jogada = pygame.time.get_ticks()
                     mesa.append(carta_oponente)
                     turno = "jogador"
                     print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
@@ -151,7 +157,7 @@ def executar_jogo():
                 print(f"Nova distribuição: {quantidade_distribuicao} cartas")
 
         tela.fill(COR_MESA)        
-        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao)
+        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno)
 
         if estado_partida != "jogando":
             desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida)
