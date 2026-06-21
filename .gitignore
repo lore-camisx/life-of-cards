@@ -1,0 +1,13 @@
+# Arquivos automáticos do Python
+__pycache__/
+*.py[cod]
+
+# Cache de testes
+.pytest_cache/
+
+# Ambiente virtual
+.venv/
+venv/
+
+# Resultado gerado durante partidas
+data/resultado.txt
