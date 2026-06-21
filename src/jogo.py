@@ -12,6 +12,7 @@ from src.interface import qual_carta_clicada, atualizar_display, renderizar_tudo
 from src.regras import jogada_automatica, sortear_primeiro_dealer, passar_dealer
 from src.dados import salvar_resultado 
 from src.interface import qual_carta_clicada, atualizar_display
+from src.interface import desenhar_fim_de_jogo
 from src.regras import (
     jogada_automatica,
     avaliar_vencedor_turno,
@@ -63,7 +64,7 @@ def executar_jogo():
         relogio.tick(FPS)
         rodando, pos_mouse = tratar_eventos()
         
-        if pos_mouse and turno == "jogador":
+        if (estado_partida == "jogando" and jogador_principal.esta_ativo() and pos_mouse and turno == "jogador"):
             indice_clicado = qual_carta_clicada(pos_mouse, rects_cartas_mao)
             
             if indice_clicado is not None:
@@ -74,7 +75,7 @@ def executar_jogo():
                     turno = "oponente"
                     print(f"[{jogador_principal.nome}] jogou a carta: {carta.valor} de {carta.naipe}")
         
-        if turno == "oponente":
+        if turno == "oponente" and estado_partida == "jogando":
             
             for oponente in jogadores[1:]:
                 carta_oponente = jogada_automatica(oponente)
@@ -83,10 +84,45 @@ def executar_jogo():
                     mesa.append(carta_oponente)
                     turno = "jogador"
                     print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
+            
+            vencedor_turno = avaliar_vencedor_turno(jogadores)
+
+            if vencedor_turno is not None:
+                print(f"Vencedor da rodada: {vencedor_turno.nome}")
+
+                for jogador in jogadores:
+                    if jogador != vencedor_turno:
+                        jogador.perder_vida(1)
+
+                for jogador in jogadores:
+                    print(f"{jogador.nome}: {jogador.vidas} vidas")
+
+            else:
+                print("Rodada anulada: não houve vencedor")
+
+            estado_partida = verificar_fim_de_jogo(jogador_principal, oponentes)
+
+            if estado_partida == "derrota":
+                print("Fim de jogo! Você perdeu.")
+                mensagem_fim_de_jogo = "Fim de jogo! Você perdeu."
+
+            elif estado_partida == "vitoria":
+                print("Fim de jogo! Você venceu.")
+                mensagem_fim_de_jogo = "Fim de jogo! Você venceu."
+
+            for jogador in jogadores:
+                jogador.limpar_carta_jogada()
+
+            mesa.clear()
+            turno = "jogador"
                     
         tela.fill(COR_MESA)        
         rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
 
+        if estado_partida != "jogando":
+            desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida)
+
+    pygame.display.flip()
     salvar_resultado("data/resultado.txt", "indefinido", jogadores, numero_partida=1)
 
 import pygame

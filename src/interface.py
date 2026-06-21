@@ -346,6 +346,45 @@ def atualizar_display(tela, jogadores, mesa, rects_cartas_mao):
     pygame.display.flip()
     return rects_cartas_mao
 
+def desenhar_fim_de_jogo(tela, mensagem, estado_partida):
+    """Desenha a mensagem final de vitória ou derrota."""
+
+    fonte = pygame.font.SysFont("segoeui", 40, bold=True)
+
+    if estado_partida == "vitoria":
+        cor_texto = (80, 220, 100)
+    else:
+        cor_texto = (230, 70, 70)
+
+    texto = fonte.render(
+        mensagem,
+        True,
+        cor_texto
+    )
+
+    texto_rect = texto.get_rect(
+        center=(LARGURA_TELA // 2, ALTURA_TELA // 2)
+    )
+
+    fundo_rect = texto_rect.inflate(50, 30)
+
+    pygame.draw.rect(
+    tela,
+    (8, 28, 21),
+    fundo_rect,
+    border_radius=10
+    )
+
+    pygame.draw.rect(
+        tela,
+        BRANCO,
+        fundo_rect,
+        width=2,
+        border_radius=10
+    )
+    
+    tela.blit(texto, texto_rect)
+
 
 def qual_carta_clicada(pos_mouse, rects_cartas):
     """Detecta qual carta foi clicada."""
