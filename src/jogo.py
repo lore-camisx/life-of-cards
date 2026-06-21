@@ -32,6 +32,9 @@ def executar_jogo():
     momento_jogada = 0
     TEMPO_OPONENTES = 1000
 
+    momento_jogada_jogador = 0
+    TEMPO_JOGADOR = 20000
+
     momento_resultado = 0
     TEMPO_RESULTADO = 1500
     
@@ -49,26 +52,34 @@ def executar_jogo():
     mensagem_fim_de_jogo = ""
     mensagem_resultado = ""
 
+    segundos_restantes = 20
+
     numero_partida = obter_proximo_numero_partida("data/resultado.txt")
     rodando = True
 
     while rodando:
         relogio.tick(FPS)
         rodando, pos_mouse = tratar_eventos()
+        tempo_atual = pygame.time.get_ticks()
         
-        if (estado_partida == "jogando" and jogador_principal.esta_ativo() and pos_mouse and turno == "jogador"):
+        if (estado_partida == "jogando" and jogador_principal.esta_ativo() and turno == "jogador"):
             indice_clicado = qual_carta_clicada(pos_mouse, rects_cartas_mao)
-            
+            segundos_restantes = (TEMPO_JOGADOR - (tempo_atual - momento_jogada_jogador)) // 1000
+
             if indice_clicado is not None:
                 carta = jogador_principal.jogar_carta(indice_clicado)
-                
                 if carta:
                     mesa.append(carta)
                     turno = "oponente"
                     momento_jogada = pygame.time.get_ticks()
-                    print(f"[{jogador_principal.nome}] jogou a carta: {carta.valor} de {carta.naipe}")
-        
-        tempo_atual = pygame.time.get_ticks()
+
+            elif tempo_atual - momento_jogada_jogador >= TEMPO_JOGADOR:
+                carta = jogada_automatica(jogador_principal)
+                if carta:
+                    mesa.append(carta)
+                    turno = "oponente"
+                    momento_jogada = pygame.time.get_ticks()
+                    print(f"[{jogador_principal.nome}] jogou automaticamente: {carta.valor} de {carta.naipe}")
 
         if (turno == "oponente" and estado_partida == "jogando" and tempo_atual - momento_jogada >= TEMPO_OPONENTES):
             
@@ -78,6 +89,7 @@ def executar_jogo():
                 if carta_oponente:
                     mesa.append(carta_oponente)
                     turno = "jogador"
+                    momento_jogada_jogador = pygame.time.get_ticks()
                     print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
             
             vencedor_turno = avaliar_vencedor_turno(jogadores)
@@ -120,6 +132,7 @@ def executar_jogo():
             mesa.clear()
             mensagem_resultado = ""
             turno = "jogador"
+            momento_jogada_jogador = pygame.time.get_ticks()
 
             jogadores_ativos_sem_cartas = all(
                 jogador.tamanho_mao() == 0
@@ -151,7 +164,7 @@ def executar_jogo():
 
                 print(f"Nova distribuição: {quantidade_distribuicao} cartas")
       
-        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno, mensagem_resultado)
+        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno, mensagem_resultado, segundos_restantes)
 
         if estado_partida != "jogando":
             desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida)

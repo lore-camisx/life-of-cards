@@ -431,7 +431,7 @@ def desenhar_indicador_turno(tela, turno, mensagem_resultado=""):
 
     tela.blit(texto, texto_rect)
 
-def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao=None,turno=None, mensagem_resultado=""):
+def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao=None,turno=None, mensagem_resultado="", segundos_restantes=None):
     """
     Orquestra o desenho completo da tela com todos os elementos.
     
@@ -467,6 +467,12 @@ def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distri
 
     if turno is not None:
         desenhar_indicador_turno(tela, turno, mensagem_resultado)
+
+    if segundos_restantes is not None and turno == "jogador":
+        fonte_timer = pygame.font.SysFont("segoeuisymbol", 28, bold=True)
+        cor_timer = (255, 80, 80) if segundos_restantes <= 5 else (255, 220, 80)
+        texto_timer = fonte_timer.render(f"⏱ {segundos_restantes}s", True, cor_timer)
+        tela.blit(texto_timer, texto_timer.get_rect(center=(LARGURA_TELA // 2, ALTURA_TELA - 160)))
     
     pygame.display.flip()
     return rects_cartas_mao
