@@ -27,14 +27,69 @@ def desenhar_carta(tela, x, y, carta, mostrar_detalhes=True):
         pygame.Rect: Retângulo da carta (para detecção de cliques)
     """
     rect = pygame.Rect(x, y, LARGURA_CARTA, ALTURA_CARTA)
-    
-    # Desenha fundo da carta
-    pygame.draw.rect(tela, COR_FUNDO_CARTA, rect)
-    pygame.draw.rect(tela, COR_BORDA_CARTA, rect, ESPESSURA_BORDA_CARTA)
+
+    '''Desenha as cartas'''
+    sombra = pygame.Rect(
+        x + 3,
+        y + 3,
+        LARGURA_CARTA,
+        ALTURA_CARTA
+    )
+
+    pygame.draw.rect(
+    tela,
+    (20, 35, 20),
+    sombra,
+    border_radius=7
+    )
+
+    pygame.draw.rect(
+        tela,
+        COR_FUNDO_CARTA,
+        rect,
+        border_radius=7
+    )
+
+    pygame.draw.rect(
+        tela,
+        COR_BORDA_CARTA,
+        rect,
+        ESPESSURA_BORDA_CARTA,
+        border_radius=7
+    )
     
     # Desenha valor e naipe se especificado
-    if mostrar_detalhes and carta:
-        fonte = pygame.font.Font(None, TAMANHO_FONTE_CARTA)
+    if not mostrar_detalhes and carta:
+        cor_verso = (35, 45, 75)
+
+        pygame.draw.rect(
+            tela,
+            cor_verso,
+            rect,
+            border_radius=7
+        )
+
+        borda_interna = rect.inflate(-8, -8)
+
+        pygame.draw.rect(
+            tela,
+            (190, 150, 70),
+            borda_interna,
+            width=2,
+            border_radius=5
+        )
+
+        pygame.draw.line(
+        tela,
+        (80, 95, 135),
+        borda_interna.topleft,
+        borda_interna.bottomright,
+        2
+        )
+
+    else:
+        fonte = pygame.font.SysFont("segoeuisymbol",TAMANHO_FONTE_CARTA)
+        fonte_canto = pygame.font.SysFont("segoeuisymbol",12)
         
         valor_texto = str(carta.valor)
         naipe_abrev = {
@@ -43,9 +98,16 @@ def desenhar_carta(tela, x, y, carta, mostrar_detalhes=True):
             "Espadas": "♠",
             "Ouros": "♦"
         }.get(carta.naipe, "?")
+
+        if carta.naipe in ["Copas", "Ouros"]:
+            cor_naipe = (190, 35, 45)
+        else:
+            cor_naipe = (25, 25, 30)
         
         # Texto principal (valor + naipe)
-        texto_principal = fonte.render(f"{valor_texto}{naipe_abrev}", True, COR_TEXTO_CARTA)
+        texto_principal = fonte.render(f"{valor_texto}{naipe_abrev}",True,cor_naipe)
+        texto_canto = fonte_canto.render(f"{valor_texto}{naipe_abrev}",True,cor_naipe)
+        tela.blit(texto_canto, (x + 6, y + 5))
         texto_rect = texto_principal.get_rect(center=(x + LARGURA_CARTA // 2, y + ALTURA_CARTA // 2))
         tela.blit(texto_principal, texto_rect)
     
