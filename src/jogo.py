@@ -46,7 +46,8 @@ def executar_jogo():
     print("--------------------------------\n")
     # ==========================================
 
-    baralho, jogadores = distribuir_cartas(baralho, jogadores, 5)
+    quantidade_distribuicao = 1
+    baralho, jogadores = distribuir_cartas(baralho, jogadores, quantidade_distribuicao)
 
     jogador_principal = jogadores[0]
     oponentes = jogadores[1:]
@@ -118,7 +119,37 @@ def executar_jogo():
 
             mesa.clear()
             turno = "jogador"
-                    
+
+            jogadores_ativos_sem_cartas = all(
+                jogador.tamanho_mao() == 0
+                for jogador in jogadores
+                if jogador.esta_ativo()
+            )
+
+            if estado_partida == "jogando" and jogadores_ativos_sem_cartas:
+                print("Distribuição encerrada!")
+
+                quantidade_distribuicao += 1
+
+                if quantidade_distribuicao > 5:
+                    quantidade_distribuicao = 1
+
+                baralho = criar_baralho()
+
+                jogadores_ativos = [
+                    jogador
+                    for jogador in jogadores
+                    if jogador.esta_ativo()
+                ]
+
+                baralho, jogadores_ativos = distribuir_cartas(
+                    baralho,
+                    jogadores_ativos,
+                    quantidade_distribuicao
+                )
+
+                print(f"Nova distribuição: {quantidade_distribuicao} cartas")
+
         tela.fill(COR_MESA)        
         rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
 

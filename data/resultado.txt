@@ -4,3 +4,9 @@ Jogador 01 | Vidas: 0 | Cartas: 2 | Status: Eliminado
 Jogador 02 | Vidas: 0 | Cartas: 2 | Status: Eliminado
 Jogador 03 | Vidas: 1 | Cartas: 2 | Status: Ativo
 Jogador 04 | Vidas: 2 | Cartas: 2 | Status: Ativo
+Partida 1 
+Resultado: derrota
+Jogador 01 | Vidas: 0 | Cartas: 2 | Status: Eliminado
+Jogador 02 | Vidas: 0 | Cartas: 2 | Status: Eliminado
+Jogador 03 | Vidas: 1 | Cartas: 2 | Status: Ativo
+Jogador 04 | Vidas: 0 | Cartas: 0 | Status: Eliminado
