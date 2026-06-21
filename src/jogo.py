@@ -83,7 +83,8 @@ def executar_jogo():
                     mesa.append(carta_oponente)
                     turno = "jogador"
                     print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
-                
+                    
+        tela.fill(COR_MESA)        
         rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao)
 
     salvar_resultado("data/resultado.txt", "indefinido", jogadores, numero_partida=1)

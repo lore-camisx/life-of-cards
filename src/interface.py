@@ -1,7 +1,6 @@
 import pygame
 from src.config import (
-    PRETO, BRANCO, CINZA, CINZA_ESCURO,  
-    LARGURA_TELA, ALTURA_TELA,
+    LARGURA_TELA, ALTURA_TELA, COR_TELA,
     LARGURA_CARTA, ALTURA_CARTA, ESPACAMENTO_CARTAS,
     ESPESSURA_BORDA_CARTA, COR_BORDA_CARTA, COR_FUNDO_CARTA,
     COR_TEXTO_CARTA, TAMANHO_FONTE_CARTA,
@@ -11,7 +10,7 @@ from src.config import (
 
 def desenhar_tela(tela):
     """Limpa a tela e pinta de preto."""
-    tela.fill(PRETO)
+    tela.fill(COR_TELA)
 
 
 def desenhar_carta(tela, x, y, carta, mostrar_detalhes=True):

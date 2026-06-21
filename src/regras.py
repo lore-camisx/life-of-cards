@@ -3,17 +3,15 @@ from collections import Counter
 import pygame
 
 from src.config import (
-    PRETO, BRANCO, CINZA, CINZA_ESCURO,
-    LARGURA_TELA, ALTURA_TELA,
+    LARGURA_TELA, ALTURA_TELA, COR_TELA,
     LARGURA_CARTA, ALTURA_CARTA, ESPACAMENTO_CARTAS,
     ESPESSURA_BORDA_CARTA, COR_BORDA_CARTA, COR_FUNDO_CARTA,
     COR_TEXTO_CARTA, TAMANHO_FONTE_CARTA,
     MARGEM_INFERIOR, MARGEM_SUPERIOR, MARGEM_LATERAL
 )
 
-
 def desenhar_tela(tela):
-    tela.fill(PRETO)
+    tela.fill(COR_TELA)
 
 
 def desenhar_carta(tela, x, y, carta, mostrar_detalhes=True):
