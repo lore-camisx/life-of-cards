@@ -4,12 +4,12 @@ Esta pasta contém os módulos principais do jogo.
 
 ## Arquivos
 
-- `jogo.py`: loop principal, eventos, atualização e renderização.
-- `config.py`: constantes globais (tela, cores, caminhos, FPS).
-- `funcoes.py`: funções auxiliares de regra e lógica.
-- `sprites.py`: carregamento e recorte de spritesheet.
-- `dados.py`: leitura e gravação de dados (recorde/ranking).
-
-## Dica de evolução
-
-Quando o projeto crescer, mantenha módulos pequenos e separados por responsabilidade.
+- `baralho.py`: cria, embaralha e distribui o baralho.
+- `carta.py`: representa as cartas, seus valores, naipes e forças.
+- `config.py`: guarda constantes como cores, dimensões e vidas.
+- `dados.py`: salva e carrega o histórico das partidas.
+- `entrada.py`: trata eventos do mouse e do teclado.
+- `interface.py`: desenha os elementos visuais do jogo.
+- `jogador.py`: representa os jogadores, suas vidas e suas mãos.
+- `jogo.py`: contém o fluxo principal e executa a partida.
+- `regras.py`: contém as regras, comparações e condições de vitória e derrota.
