@@ -14,8 +14,10 @@ from src.regras import (
     avaliar_vencedor_turno,
     verificar_fim_de_jogo
 )
-from src.dados import salvar_resultado
-
+from src.dados import (
+    salvar_resultado,
+    obter_proximo_numero_partida
+)
 
 def executar_jogo():
     pygame.init()
@@ -47,6 +49,7 @@ def executar_jogo():
     mensagem_fim_de_jogo = ""
     mensagem_resultado = ""
 
+    numero_partida = obter_proximo_numero_partida("data/resultado.txt")
     rodando = True
 
     while rodando:
@@ -105,7 +108,7 @@ def executar_jogo():
                 mensagem_fim_de_jogo = "Fim de jogo! Você venceu."
 
             if estado_partida != "jogando":
-                salvar_resultado("data/resultado.txt", estado_partida, jogadores, numero_partida=1)
+                salvar_resultado("data/resultado.txt", estado_partida, jogadores, numero_partida=numero_partida)
 
             turno = "resultado"
             momento_resultado = pygame.time.get_ticks()

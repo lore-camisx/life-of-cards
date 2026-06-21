@@ -39,3 +39,8 @@ def carregar_historico(caminho_arquivo):
 
     except (FileNotFoundError, ValueError):
         return ""
+
+def obter_proximo_numero_partida(caminho_arquivo):
+    historico = carregar_historico(caminho_arquivo)
+    quantidade = historico.count("Partida ")
+    return quantidade + 1

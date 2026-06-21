@@ -110,9 +110,6 @@ def jogada_automatica(jogador):
         oponente_jogada = random.randint(0, (len(jogador.mao)-1))
         carta_jogada = jogador.jogar_carta(oponente_jogada)
         return carta_jogada
-    if jogador.esta_ativo() and jogador.tamanho_mao() > 0:
-        indice = random.randint(0, jogador.tamanho_mao() - 1)
-        return jogador.jogar_carta(indice)
     return None
 
 
