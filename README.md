@@ -85,7 +85,7 @@ python tests/test_integracao.py
 - Preencher este README com nome final, descrição real, regras e controles do jogo.
 - Atualizar `docs/proposta.MD` com a proposta do grupo.
 - Garantir que o jogo executa com `python main.py`.
-- Garantir que os testes passam com `pytest`.
+- Garantir que todos os testes passam com os comandos apresentados acima.
 
 ## Observações para os alunos
 
