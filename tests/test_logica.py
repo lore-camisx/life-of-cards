@@ -1,6 +1,14 @@
 import unittest
 from src.jogador import Jogador
-from src.regras import comparar_cartas, avaliar_vencedor_turno, verificar_derrota, verificar_vitoria
+from src.regras import (
+    comparar_cartas,
+    passar_dealer,
+    avaliar_vencedor_turno,
+    verificar_derrota,
+    verificar_vitoria,
+    filtrar_ordem_ativos,
+    criar_ordem_rodada
+)
 
 
 class CartaSimples:
@@ -61,6 +69,35 @@ class TestRegras(unittest.TestCase):
 
         self.assertTrue(verificar_vitoria([oponente1, oponente2, oponente3]))
 
+    def test_criar_ordem_rodada(self):
+        ordem_mesa = [0, 2, 1, 3]
+
+        resultado = criar_ordem_rodada(0, ordem_mesa)
+
+        self.assertEqual(criar_ordem_rodada(0, ordem_mesa), [2, 1, 3, 0])
+        self.assertEqual(criar_ordem_rodada(2, ordem_mesa), [1, 3, 0, 2])
+        self.assertEqual(criar_ordem_rodada(1, ordem_mesa), [3, 0, 2, 1])
+        self.assertEqual(criar_ordem_rodada(3, ordem_mesa), [0, 2, 1, 3])
+
+        self.assertEqual(passar_dealer(0, ordem_mesa), 2)
+        self.assertEqual(passar_dealer(2, ordem_mesa), 1)
+        self.assertEqual(passar_dealer(1, ordem_mesa), 3)
+        self.assertEqual(passar_dealer(3, ordem_mesa), 0)
+
+    def test_filtrar_ordem_ativos(self):
+        jogadores = [
+            Jogador("Jogador 0"),
+            Jogador("Jogador 1"),
+            Jogador("Jogador 2"),
+            Jogador("Jogador 3")
+        ]
+
+        jogadores[1].eliminar()
+
+        ordem = [2, 1, 3, 0]
+        resultado = filtrar_ordem_ativos(ordem, jogadores)
+
+        self.assertEqual(resultado, [2, 3, 0])
 
 if __name__ == '__main__':
     unittest.main()
