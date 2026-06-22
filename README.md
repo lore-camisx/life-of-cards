@@ -49,8 +49,12 @@ O objetivo é preservar suas três vidas e eliminar os três oponentes antes de 
 - Se todas as cartas válidas forem anuladas, a rodada termina sem vencedor e ninguém perde vida.
 - O jogador possui 20 segundos para escolher uma carta.
 - Caso o tempo termine, uma carta da mão é jogada automaticamente.
-- Sistema de dealer rotativo.
-- Definição da ordem inicial das jogadas com base no dealer.
+- O primeiro dealer é escolhido aleatoriamente.
+- Na primeira rodada de cada distribuição, começa o jogador à direita do dealer.
+- Nas rodadas seguintes, começa o jogador à esquerda do vencedor anterior.
+- O dealer passa para o próximo jogador quando uma nova distribuição começa.
+- Jogadores eliminados são ignorados na ordem das jogadas.
+- A interface indica visualmente qual jogador é o dealer atual.
 
 ## Controles
 
