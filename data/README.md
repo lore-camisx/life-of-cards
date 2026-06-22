@@ -1,13 +1,13 @@
 # Dados
 
-Esta pasta guarda arquivos de persistencia simples em texto.
+Esta pasta guarda arquivos de persistência simples em formato de texto.
 
 ## Arquivos
 
-- `recorde.txt`: melhor pontuacao registrada.
-- `ranking.txt`: base para ranking de jogadores (opcional neste template).
-- `README.txt`: arquivo legado; manter por compatibilidade se necessario.
+- `resultado.txt`: armazena o número, o resultado e o estado dos jogadores ao final de cada partida.
+- `recorde.txt`: arquivo reservado para um futuro sistema de recorde.
+- `ranking.txt`: arquivo reservado para um futuro sistema de ranking.
 
-## Observacao
+## Observação
 
-Evite versionar dados pessoais reais dos jogadores.
+O arquivo `resultado.txt` é atualizado automaticamente durante a execução do jogo e não é enviado ao GitHub.
