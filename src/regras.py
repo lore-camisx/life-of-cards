@@ -120,8 +120,25 @@ def sortear_primeiro_dealer(qtd_jogadores):
     return random.randint(0, qtd_jogadores - 1)
 
 
-def passar_dealer(indice_atual, qtd_jogadores):
-    """
-    Passa o dealer para o próximo jogador à direita seguindo a ordem incremental (sentido horário).
-    """
-    return (indice_atual + 1) % qtd_jogadores
+def passar_dealer(indice_atual, ordem_mesa):
+    posicao_atual = ordem_mesa.index(indice_atual)
+    proxima_posicao = (posicao_atual + 1) % len(ordem_mesa)
+
+    return ordem_mesa[proxima_posicao]
+
+def criar_ordem_rodada(indice_dealer, ordem_mesa):
+    posicao_dealer = ordem_mesa.index(indice_dealer)
+
+    depois_dealer = ordem_mesa[posicao_dealer + 1:]
+    inicio_ate_dealer = ordem_mesa[:posicao_dealer + 1]
+
+    return depois_dealer + inicio_ate_dealer
+
+def filtrar_ordem_ativos(ordem_rodada, jogadores):
+    ordem_ativa = []
+
+    for indice in ordem_rodada:
+        if jogadores[indice].esta_ativo():
+            ordem_ativa.append(indice)
+
+    return ordem_ativa

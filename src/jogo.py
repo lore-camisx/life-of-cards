@@ -12,7 +12,10 @@ from src.interface import (
 from src.regras import (
     jogada_automatica,
     avaliar_vencedor_turno,
-    verificar_fim_de_jogo
+    verificar_fim_de_jogo,
+    sortear_primeiro_dealer,
+    passar_dealer,
+    criar_ordem_rodada
 )
 from src.dados import (
     salvar_resultado,
@@ -28,6 +31,14 @@ def executar_jogo():
 
     baralho = criar_baralho()
     jogadores = criar_jogadores()
+
+    ordem_mesa = [0, 2, 1, 3]
+
+    indice_dealer = sortear_primeiro_dealer(len(jogadores))
+    ordem_rodada = criar_ordem_rodada(indice_dealer, ordem_mesa)
+
+    print(f"Dealer inicial: {jogadores[indice_dealer].nome}")
+    print(f"Ordem da primeira rodada: {ordem_rodada}")
 
     momento_jogada = 0
     TEMPO_OPONENTES = 1000
@@ -147,6 +158,12 @@ def executar_jogo():
 
                 if quantidade_distribuicao > 5:
                     quantidade_distribuicao = 1
+
+                indice_dealer = passar_dealer(indice_dealer, ordem_mesa)
+                ordem_rodada = criar_ordem_rodada(indice_dealer, ordem_mesa)
+
+                print(f"Novo dealer: {jogadores[indice_dealer].nome}")
+                print(f"Nova ordem: {ordem_rodada}")
 
                 baralho = criar_baralho()
 
