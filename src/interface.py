@@ -482,7 +482,7 @@ def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distri
     pygame.display.flip()
     return rects_cartas_mao
 
-def desenhar_fim_de_jogo(tela, mensagem, estado_partida):
+def desenhar_fim_de_jogo(tela, mensagem, estado_partida, jogadores):
     """Desenha a mensagem final de vitória ou derrota."""
 
     fonte = pygame.font.SysFont("segoeui", 40, bold=True)
@@ -521,6 +521,35 @@ def desenhar_fim_de_jogo(tela, mensagem, estado_partida):
     
     tela.blit(texto, texto_rect)
 
+    fonte_info = pygame.font.SysFont("segoeui", 24)
+
+    y = texto_rect.bottom + 30
+
+    for jogador in jogadores:
+        texto_jogador = fonte_info.render(
+        f"{jogador.nome}: {jogador.vidas} vidas",
+        True,
+        (255, 255, 255)
+    )
+
+        tela.blit(
+            texto_jogador,
+            texto_jogador.get_rect(center=(LARGURA_TELA // 2, y))
+        )
+
+        y += 35
+
+    texto_saida = fonte_info.render(
+    "ESC - Sair",
+    
+    True,
+    (255, 255, 0)
+    )
+
+    tela.blit(
+    texto_saida,
+    texto_saida.get_rect(center=(LARGURA_TELA // 2, y + 30))
+    )
 
 def qual_carta_clicada(pos_mouse, rects_cartas):
     """Detecta qual carta foi clicada."""
@@ -530,6 +559,58 @@ def qual_carta_clicada(pos_mouse, rects_cartas):
     for i, retangulo in enumerate(rects_cartas):
         if retangulo.collidepoint(pos_mouse):
             return i
+        
+def desenhar_tela_inicial(tela):
+    fonte_titulo = pygame.font.SysFont("segoeui", 50, bold=True)
+    fonte_texto = pygame.font.SysFont("segoeui", 26)
+
+    tela.fill(COR_TELA)
+
+    titulo = fonte_titulo.render(
+        "Life of Cards",
+        True,
+        BRANCO
+    )
+
+    instrucao = fonte_texto.render(
+        "Clique para iniciar",
+        True,
+        (255, 220, 80)
+    )
+
+    objetivo = fonte_texto.render(
+        "Objetivo:",
+        True,
+        BRANCO
+    )
+
+    descricao = fonte_texto.render(
+        "Sobreviva e elimine os oponentes antes de perder suas vidas.",
+        True,
+        BRANCO
+    )
+
+    tela.blit(
+        titulo,
+        titulo.get_rect(center=(LARGURA_TELA//2, 180))
+    )
+
+    tela.blit(
+        instrucao,
+        instrucao.get_rect(center=(LARGURA_TELA//2, 300))
+    )
+
+    tela.blit(
+        objetivo,
+        objetivo.get_rect(center=(LARGURA_TELA//2, 400))
+    )
+
+    tela.blit(
+        descricao,
+        descricao.get_rect(center=(LARGURA_TELA//2, 450))
+    )
+
+    pygame.display.flip()
             
     return None
 

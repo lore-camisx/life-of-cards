@@ -7,7 +7,8 @@ from src.entrada import tratar_eventos
 from src.interface import (
     qual_carta_clicada,
     atualizar_display,
-    desenhar_fim_de_jogo
+    desenhar_fim_de_jogo,
+    desenhar_tela_inicial
 )
 from src.regras import (
     jogada_automatica,
@@ -73,7 +74,7 @@ def executar_jogo():
     donos_mesa = []
     rects_cartas_mao = []
 
-    estado_partida = "jogando"
+    estado_partida = "inicio"
     mensagem_fim_de_jogo = ""
     mensagem_resultado = ""
 
@@ -86,6 +87,19 @@ def executar_jogo():
         relogio.tick(FPS)
         rodando, pos_mouse = tratar_eventos()
         tempo_atual = pygame.time.get_ticks()
+
+        if estado_partida == "inicio":
+            desenhar_tela_inicial(tela)
+
+            if pos_mouse is not None:
+                estado_partida = "jogando"
+
+                if indice_jogador_atual == 0:
+                    momento_jogada_jogador = pygame.time.get_ticks()
+                else:
+                    momento_jogada = pygame.time.get_ticks()
+
+            continue
         
         if (estado_partida == "jogando" and jogador_principal.esta_ativo() and turno == "jogador" and indice_jogador_atual == 0):
             indice_clicado = qual_carta_clicada(pos_mouse, rects_cartas_mao)
@@ -249,7 +263,7 @@ def executar_jogo():
         rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno, mensagem_resultado, segundos_restantes, donos_mesa)
 
         if estado_partida != "jogando":
-            desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida)
+            desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida, jogadores)
             pygame.display.flip()
 
 if __name__ == "__main__":

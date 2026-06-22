@@ -16,5 +16,5 @@ def tratar_eventos():
         elif evento.type == pygame.MOUSEBUTTONDOWN:
             if evento.button == 1:
                 pos_mouse = evento.pos
-            
+                    
     return rodando, pos_mouse
