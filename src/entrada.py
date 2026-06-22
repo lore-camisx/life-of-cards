@@ -13,8 +13,11 @@ def tratar_eventos():
             if evento.key == pygame.K_ESCAPE:
                 rodando = False
 
+            elif evento.key == pygame.K_r:
+                return "reiniciar", None
+
         elif evento.type == pygame.MOUSEBUTTONDOWN:
             if evento.button == 1:
                 pos_mouse = evento.pos
-            
+                    
     return rodando, pos_mouse
