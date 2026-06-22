@@ -142,3 +142,13 @@ def filtrar_ordem_ativos(ordem_rodada, jogadores):
             ordem_ativa.append(indice)
 
     return ordem_ativa
+
+def avancar_turno(posicao_turno, ordem_ativa):
+    nova_posicao = posicao_turno + 1
+
+    if nova_posicao >= len(ordem_ativa):
+        return nova_posicao, None, True
+
+    indice_atual = ordem_ativa[nova_posicao]
+
+    return nova_posicao, indice_atual, False

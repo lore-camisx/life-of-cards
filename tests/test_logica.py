@@ -7,6 +7,7 @@ from src.regras import (
     verificar_derrota,
     verificar_vitoria,
     filtrar_ordem_ativos,
+    avancar_turno,
     criar_ordem_rodada
 )
 
@@ -98,6 +99,28 @@ class TestRegras(unittest.TestCase):
         resultado = filtrar_ordem_ativos(ordem, jogadores)
 
         self.assertEqual(resultado, [2, 3, 0])
+
+    def test_sequencia_de_turnos(self):
+        ordem_ativa = [2, 1, 3, 0]
+        posicao_turno = 0
+        jogadores_que_jogaram = []
+
+        while posicao_turno < len(ordem_ativa):
+            indice_atual = ordem_ativa[posicao_turno]
+            jogadores_que_jogaram.append(indice_atual)
+            posicao_turno += 1
+
+        self.assertEqual(jogadores_que_jogaram, [2, 1, 3, 0])
+        self.assertEqual(posicao_turno, 4)
+
+    def test_avancar_turno(self):
+        ordem = [2, 1, 3, 0]
+
+        resultado = avancar_turno(0, ordem)
+        self.assertEqual(resultado, (1, 1, False))
+
+        resultado = avancar_turno(3, ordem)
+        self.assertEqual(resultado, (4, None, True))
 
 if __name__ == '__main__':
     unittest.main()

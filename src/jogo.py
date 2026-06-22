@@ -16,6 +16,7 @@ from src.regras import (
     sortear_primeiro_dealer,
     passar_dealer,
     filtrar_ordem_ativos,
+    avancar_turno,
     criar_ordem_rodada
 )
 from src.dados import (
@@ -61,7 +62,13 @@ def executar_jogo():
     jogador_principal = jogadores[0]
     oponentes = jogadores[1:]
 
-    turno = "jogador"
+    if indice_jogador_atual == 0:
+        turno = "jogador"
+        momento_jogada_jogador = pygame.time.get_ticks()
+    else:
+        turno = "oponente"
+        momento_jogada = pygame.time.get_ticks()
+
     mesa = []
     donos_mesa = []
     rects_cartas_mao = []
@@ -80,7 +87,7 @@ def executar_jogo():
         rodando, pos_mouse = tratar_eventos()
         tempo_atual = pygame.time.get_ticks()
         
-        if (estado_partida == "jogando" and jogador_principal.esta_ativo() and turno == "jogador"):
+        if (estado_partida == "jogando" and jogador_principal.esta_ativo() and turno == "jogador" and indice_jogador_atual == 0):
             indice_clicado = qual_carta_clicada(pos_mouse, rects_cartas_mao)
             segundos_restantes = (TEMPO_JOGADOR - (tempo_atual - momento_jogada_jogador)) // 1000
 
@@ -89,30 +96,65 @@ def executar_jogo():
                 if carta:
                     mesa.append(carta)
                     donos_mesa.append(0)
-                    turno = "oponente"
-                    momento_jogada = pygame.time.get_ticks()
+                    posicao_turno, indice_jogador_atual, rodada_completa = avancar_turno(posicao_turno,ordem_rodada_ativa)
+
+                    if rodada_completa:
+                        turno = "avaliar"
+                    else:
+                        if indice_jogador_atual == 0:
+                            turno = "jogador"
+                            momento_jogada_jogador = pygame.time.get_ticks()
+                        else:
+                            turno = "oponente"
+                            momento_jogada = pygame.time.get_ticks()
 
             elif tempo_atual - momento_jogada_jogador >= TEMPO_JOGADOR:
                 carta = jogada_automatica(jogador_principal)
                 if carta:
                     mesa.append(carta)
                     donos_mesa.append(0)
-                    turno = "oponente"
-                    momento_jogada = pygame.time.get_ticks()
+                    posicao_turno, indice_jogador_atual, rodada_completa = avancar_turno(posicao_turno,ordem_rodada_ativa)
+
+                    if rodada_completa:
+                        turno = "avaliar"
+                    else:
+                        if indice_jogador_atual == 0:
+                            turno = "jogador"
+                            momento_jogada_jogador = pygame.time.get_ticks()
+                        else:
+                            turno = "oponente"
+                            momento_jogada = pygame.time.get_ticks()
+
                     print(f"[{jogador_principal.nome}] jogou automaticamente: {carta.valor} de {carta.naipe}")
 
         if (turno == "oponente" and estado_partida == "jogando" and tempo_atual - momento_jogada >= TEMPO_OPONENTES):
-            
-            for indice_oponente, oponente in enumerate(jogadores[1:], start=1):
-                carta_oponente = jogada_automatica(oponente)
+            jogador_atual = jogadores[indice_jogador_atual]
+            carta_oponente = jogada_automatica(jogador_atual)
 
-                if carta_oponente:
-                    mesa.append(carta_oponente)
-                    donos_mesa.append(indice_oponente)
+            if carta_oponente:
+                mesa.append(carta_oponente)
+                donos_mesa.append(indice_jogador_atual)
+
+                print(
+                    f"[{jogador_atual.nome}] jogou a carta: "
+                    f"{carta_oponente.valor} de {carta_oponente.naipe}"
+                )
+
+                posicao_turno, indice_jogador_atual, rodada_completa = avancar_turno(
+                    posicao_turno,
+                    ordem_rodada_ativa
+                )
+
+                if rodada_completa:
+                    turno = "avaliar"
+                elif indice_jogador_atual == 0:
                     turno = "jogador"
                     momento_jogada_jogador = pygame.time.get_ticks()
-                    print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
-            
+                else:
+                    turno = "oponente"
+                    momento_jogada = pygame.time.get_ticks()
+
+        if turno == "avaliar" and estado_partida == "jogando":
             vencedor_turno = avaliar_vencedor_turno(jogadores)
 
             if vencedor_turno is not None:
@@ -153,8 +195,6 @@ def executar_jogo():
             mesa.clear()
             donos_mesa.clear()
             mensagem_resultado = ""
-            turno = "jogador"
-            momento_jogada_jogador = pygame.time.get_ticks()
 
             jogadores_ativos_sem_cartas = all(
                 jogador.tamanho_mao() == 0
@@ -169,7 +209,7 @@ def executar_jogo():
 
                 if quantidade_distribuicao > 5:
                     quantidade_distribuicao = 1
-
+                
                 indice_dealer = passar_dealer(indice_dealer, ordem_mesa)
                 ordem_rodada = criar_ordem_rodada(indice_dealer, ordem_mesa)
 
@@ -191,6 +231,20 @@ def executar_jogo():
                 )
 
                 print(f"Nova distribuição: {quantidade_distribuicao} cartas")
+
+            if estado_partida == "jogando":
+                ordem_rodada_ativa = filtrar_ordem_ativos(ordem_rodada, jogadores)
+                posicao_turno = 0
+                indice_jogador_atual = ordem_rodada_ativa[posicao_turno]
+
+                if indice_jogador_atual == 0:
+                    turno = "jogador"
+                    momento_jogada_jogador = pygame.time.get_ticks()
+                else:
+                    turno = "oponente"
+                    momento_jogada = pygame.time.get_ticks()
+            else:
+                turno = "fim"
       
         rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno, mensagem_resultado, segundos_restantes, donos_mesa)
 
