@@ -274,7 +274,7 @@ def executar_jogo():
             else:
                 turno = "fim"
       
-        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno, mensagem_resultado, segundos_restantes, donos_mesa)
+        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno, mensagem_resultado, segundos_restantes, donos_mesa, indice_dealer)
 
         if estado_partida != "jogando":
             desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida, jogadores)

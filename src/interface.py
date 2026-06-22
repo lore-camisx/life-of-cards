@@ -436,7 +436,21 @@ def desenhar_indicador_turno(tela, turno, mensagem_resultado=""):
 
     tela.blit(texto, texto_rect)
 
-def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao=None,turno=None, mensagem_resultado="", segundos_restantes=None, donos_mesa=None):
+def desenhar_dealer(tela, indice_dealer):
+    fonte = pygame.font.SysFont("segoeui", 18, bold=True)
+    texto = fonte.render("DEALER", True, (255, 215, 0))
+
+    posicoes = [
+        (LARGURA_TELA // 2, ALTURA_TELA - 125),  # jogador 0
+        (LARGURA_TELA // 2, 145),                # jogador 1
+        (LARGURA_TELA - 160, ALTURA_TELA // 2),  # jogador 2
+        (160, ALTURA_TELA // 2)                  # jogador 3
+    ]
+
+    x, y = posicoes[indice_dealer]
+    tela.blit(texto, texto.get_rect(center=(x, y)))
+
+def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao=None,turno=None, mensagem_resultado="", segundos_restantes=None, donos_mesa=None, indice_dealer=None):
     """
     Orquestra o desenho completo da tela com todos os elementos.
     
@@ -478,6 +492,9 @@ def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distri
         cor_timer = (255, 80, 80) if segundos_restantes <= 5 else (255, 220, 80)
         texto_timer = fonte_timer.render(f"⏱ {segundos_restantes}s", True, cor_timer)
         tela.blit(texto_timer, texto_timer.get_rect(center=(LARGURA_TELA // 2, ALTURA_TELA - 160)))
+    
+    if indice_dealer is not None:
+        desenhar_dealer(tela, indice_dealer)
     
     pygame.display.flip()
     return rects_cartas_mao
