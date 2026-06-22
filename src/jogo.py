@@ -15,6 +15,7 @@ from src.regras import (
     verificar_fim_de_jogo,
     sortear_primeiro_dealer,
     passar_dealer,
+    filtrar_ordem_ativos,
     criar_ordem_rodada
 )
 from src.dados import (
@@ -36,7 +37,12 @@ def executar_jogo():
 
     indice_dealer = sortear_primeiro_dealer(len(jogadores))
     ordem_rodada = criar_ordem_rodada(indice_dealer, ordem_mesa)
+    
+    ordem_rodada_ativa = filtrar_ordem_ativos(ordem_rodada, jogadores)
+    posicao_turno = 0
+    indice_jogador_atual = ordem_rodada_ativa[posicao_turno]
 
+    print(f"Primeiro a jogar: {jogadores[indice_jogador_atual].nome}")
     print(f"Dealer inicial: {jogadores[indice_dealer].nome}")
     print(f"Ordem da primeira rodada: {ordem_rodada}")
 
@@ -57,6 +63,7 @@ def executar_jogo():
 
     turno = "jogador"
     mesa = []
+    donos_mesa = []
     rects_cartas_mao = []
 
     estado_partida = "jogando"
@@ -81,6 +88,7 @@ def executar_jogo():
                 carta = jogador_principal.jogar_carta(indice_clicado)
                 if carta:
                     mesa.append(carta)
+                    donos_mesa.append(0)
                     turno = "oponente"
                     momento_jogada = pygame.time.get_ticks()
 
@@ -88,17 +96,19 @@ def executar_jogo():
                 carta = jogada_automatica(jogador_principal)
                 if carta:
                     mesa.append(carta)
+                    donos_mesa.append(0)
                     turno = "oponente"
                     momento_jogada = pygame.time.get_ticks()
                     print(f"[{jogador_principal.nome}] jogou automaticamente: {carta.valor} de {carta.naipe}")
 
         if (turno == "oponente" and estado_partida == "jogando" and tempo_atual - momento_jogada >= TEMPO_OPONENTES):
             
-            for oponente in jogadores[1:]:
+            for indice_oponente, oponente in enumerate(jogadores[1:], start=1):
                 carta_oponente = jogada_automatica(oponente)
 
                 if carta_oponente:
                     mesa.append(carta_oponente)
+                    donos_mesa.append(indice_oponente)
                     turno = "jogador"
                     momento_jogada_jogador = pygame.time.get_ticks()
                     print(f"[{oponente.nome}] jogou a carta: {carta_oponente.valor} de {carta_oponente.naipe}")
@@ -141,6 +151,7 @@ def executar_jogo():
                 jogador.limpar_carta_jogada()
 
             mesa.clear()
+            donos_mesa.clear()
             mensagem_resultado = ""
             turno = "jogador"
             momento_jogada_jogador = pygame.time.get_ticks()
@@ -181,7 +192,7 @@ def executar_jogo():
 
                 print(f"Nova distribuição: {quantidade_distribuicao} cartas")
       
-        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno, mensagem_resultado, segundos_restantes)
+        rects_cartas_mao = atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao,turno, mensagem_resultado, segundos_restantes, donos_mesa)
 
         if estado_partida != "jogando":
             desenhar_fim_de_jogo(tela, mensagem_fim_de_jogo, estado_partida)

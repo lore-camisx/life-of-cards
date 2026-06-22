@@ -322,7 +322,7 @@ def desenhar_cartas_oponente_direita(tela, jogador, x_pos=None):
     return rects_cartas
 
 
-def desenhar_mesa(tela, mesa):
+def desenhar_mesa(tela, mesa, donos_mesa=None):
     """
     Desenha as cartas jogadas no centro da mesa.
     
@@ -351,8 +351,13 @@ def desenhar_mesa(tela, mesa):
     ]
     
     for i, carta in enumerate(mesa):
-        if i < len(posicoes):
-            x, y = posicoes[i]
+        indice_posicao = i
+
+        if donos_mesa is not None:
+            indice_posicao = donos_mesa[i]
+
+        if indice_posicao < len(posicoes):
+            x, y = posicoes[indice_posicao]
             desenhar_carta(tela, x, y, carta, mostrar_detalhes=True)
 
 def desenhar_distribuicao(tela, quantidade):
@@ -431,7 +436,7 @@ def desenhar_indicador_turno(tela, turno, mensagem_resultado=""):
 
     tela.blit(texto, texto_rect)
 
-def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao=None,turno=None, mensagem_resultado="", segundos_restantes=None):
+def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distribuicao=None,turno=None, mensagem_resultado="", segundos_restantes=None, donos_mesa=None):
     """
     Orquestra o desenho completo da tela com todos os elementos.
     
@@ -460,7 +465,7 @@ def atualizar_display(tela, jogadores, mesa, rects_cartas_mao, quantidade_distri
         desenhar_cartas_oponente_direita(tela, jogadores[2])
         
         # Cartas da mesa
-        desenhar_mesa(tela, mesa)
+        desenhar_mesa(tela, mesa, donos_mesa)
 
     if quantidade_distribuicao is not None:
         desenhar_distribuicao(tela, quantidade_distribuicao)
