@@ -18,6 +18,7 @@ from src.regras import (
     passar_dealer,
     filtrar_ordem_ativos,
     avancar_turno,
+    criar_ordem_esquerda, 
     criar_ordem_rodada
 )
 from src.dados import (
@@ -174,6 +175,10 @@ def executar_jogo():
             if vencedor_turno is not None:
                 print(f"Vencedor da rodada: {vencedor_turno.nome}")
                 mensagem_resultado = (f"{vencedor_turno.nome} venceu a rodada!")
+
+                indice_vencedor = jogadores.index(vencedor_turno)
+                ordem_rodada = criar_ordem_esquerda(indice_vencedor,ordem_mesa)
+                print(f"Ordem após o vencedor: {ordem_rodada}")
 
                 for jogador in jogadores:
                     if jogador != vencedor_turno:

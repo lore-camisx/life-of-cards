@@ -8,6 +8,7 @@ from src.regras import (
     verificar_vitoria,
     filtrar_ordem_ativos,
     avancar_turno,
+    criar_ordem_esquerda, 
     criar_ordem_rodada
 )
 
@@ -121,6 +122,29 @@ class TestRegras(unittest.TestCase):
 
         resultado = avancar_turno(3, ordem)
         self.assertEqual(resultado, (4, None, True))
+
+    def test_criar_ordem_esquerda(self):
+        ordem_mesa = [0, 2, 1, 3]
+
+        self.assertEqual(
+            criar_ordem_esquerda(0, ordem_mesa),
+            [3, 0, 2, 1]
+        )
+
+        self.assertEqual(
+            criar_ordem_esquerda(2, ordem_mesa),
+            [0, 2, 1, 3]
+        )
+
+        self.assertEqual(
+            criar_ordem_esquerda(1, ordem_mesa),
+            [2, 1, 3, 0]
+        )
+
+        self.assertEqual(
+            criar_ordem_esquerda(3, ordem_mesa),
+            [1, 3, 0, 2]
+        )
 
 if __name__ == '__main__':
     unittest.main()

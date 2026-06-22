@@ -152,3 +152,13 @@ def avancar_turno(posicao_turno, ordem_ativa):
     indice_atual = ordem_ativa[nova_posicao]
 
     return nova_posicao, indice_atual, False
+
+def criar_ordem_esquerda(indice_vencedor, ordem_mesa):
+    posicao_vencedor = ordem_mesa.index(indice_vencedor)
+
+    posicao_esquerda = (posicao_vencedor - 1) % len(ordem_mesa)
+
+    return (
+        ordem_mesa[posicao_esquerda:]
+        + ordem_mesa[:posicao_esquerda]
+    )
