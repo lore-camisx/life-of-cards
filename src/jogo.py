@@ -184,17 +184,17 @@ def executar_jogo():
             if quantidade_distribuicao > 5:
                 quantidade_distribuicao = 1
 
-<<<<<<< HEAD
+
             baralho = criar_baralho()
-=======
-                indice_dealer = passar_dealer(indice_dealer, ordem_mesa)
-                ordem_rodada = criar_ordem_rodada(indice_dealer, ordem_mesa)
 
-                print(f"Novo dealer: {jogadores[indice_dealer].nome}")
-                print(f"Nova ordem: {ordem_rodada}")
+            indice_dealer = passar_dealer(indice_dealer, ordem_mesa)
+            ordem_rodada = criar_ordem_rodada(indice_dealer, ordem_mesa)
 
-                baralho = criar_baralho()
->>>>>>> 4eec0fef1aa0ee49a4660f67211e035b05d92ab5
+            print(f"Novo dealer: {jogadores[indice_dealer].nome}")
+            print(f"Nova ordem: {ordem_rodada}")
+
+            baralho = criar_baralho()
+
 
             jogadores_ativos = [
                 jogador
