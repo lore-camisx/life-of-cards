@@ -223,9 +223,15 @@ def executar_jogo():
 
                 if quantidade_distribuicao > 5:
                     quantidade_distribuicao = 1
-                
-                indice_dealer = passar_dealer(indice_dealer, ordem_mesa)
-                ordem_rodada = criar_ordem_rodada(indice_dealer, ordem_mesa)
+
+                indice_dealer = passar_dealer(
+                    indice_dealer,
+                    ordem_mesa
+                )
+                ordem_rodada = criar_ordem_rodada(
+                    indice_dealer,
+                    ordem_mesa
+                )
 
                 print(f"Novo dealer: {jogadores[indice_dealer].nome}")
                 print(f"Nova ordem: {ordem_rodada}")
@@ -244,7 +250,10 @@ def executar_jogo():
                     quantidade_distribuicao
                 )
 
-                print(f"Nova distribuição: {quantidade_distribuicao} cartas")
+                print(
+                    f"Nova distribuição: "
+                    f"{quantidade_distribuicao} cartas"
+                )
 
             if estado_partida == "jogando":
                 ordem_rodada_ativa = filtrar_ordem_ativos(ordem_rodada, jogadores)
