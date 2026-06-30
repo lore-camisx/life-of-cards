@@ -24,8 +24,7 @@ def listar_baralho(baralho):
 def distribuir_cartas(baralho, jogadores, quantidade):
     """
     Distribui cartas do baralho para os jogadores.
-
-    Compatível com objetos Jogador e dicionários legados.
+    
     """
     for jogador in jogadores:
         for _ in range(quantidade):
